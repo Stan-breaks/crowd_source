@@ -9,8 +9,20 @@ const reportSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Location",
   },
-  description: {
+  disease: {
     type: String,
+    required: true,
+  },
+  numberOfCases: {
+    type: Number,
+    required: true,
+  },
+  numberOfDeaths: {
+    type: Number,
+    required: true,
+  },
+  approximatedPopulationCloseBy: {
+    type: Number,
     required: true,
   },
   created: {

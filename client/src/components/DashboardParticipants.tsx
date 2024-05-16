@@ -116,10 +116,10 @@ export default function Component() {
       </div>
       <Drawer
         open={selectedParticipant.id !== 0}
-        className="bg-blue-700 bg-opacity-90"
+        className=" bg-opacity-90 gray"
       >
         <DrawerOverlay />
-        <DrawerContent className="w-full max-w-full overflow-y-auto">
+        <DrawerContent className=" bg-sky-200 w-full max-w-full overflow-y-auto">
           <Button
             variant="outline"
             onClick={handleCloseDrawer}

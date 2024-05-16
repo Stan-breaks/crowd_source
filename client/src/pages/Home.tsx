@@ -14,6 +14,7 @@ import {
 } from "@/components/icons";
 import DashboardHome from "@/components/DashboardHome";
 import DashboardParticipants from "@/components/DashboardParticipants";
+import DashboardReport from "@/components/DashboardReport";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "@/store/appStore";
@@ -208,6 +209,7 @@ export default function Component() {
 
           {buttonData.home ? <DashboardHome /> : <></>}
           {buttonData.participants ? <DashboardParticipants /> : <></>}
+          {buttonData.reports ? <DashboardReport /> : <></>}
           {buttonData.settings ? <Setting /> : <></>}
         </div>
       </div>
