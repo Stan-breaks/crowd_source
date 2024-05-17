@@ -1,22 +1,21 @@
-import {
-  SelectValue,
-  SelectTrigger,
-  SelectItem,
-  SelectContent,
-  Select,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { CardContent, Card } from "@/components/ui/card";
 import { DownloadIcon } from "@/components/icons";
 import { healthData } from "@/features/data";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Component() {
-  const [showReport, setShowReport] = useState<boolean>(false);
+  const [showReport, setShowReport] = useState<boolean>(true);
+  const [location, setLocation] = useState<string>(true);
   const handleMakeReport = () => {
     setShowReport(!showReport);
   };
-
+  console.log(healthData.length);
+  useEffect(() => {
+    if (healthData.length === 0) {
+      setLocation(false);
+    }
+  }, []);
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-8 md:px-6 md:py-12">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 md:mb-8">
@@ -31,6 +30,11 @@ export default function Component() {
               <>Make a health report based on your location.</>
             )}
           </p>
+          {!location && (
+            <p className="text-red-500 dark:text-red-400">
+              Navigate to the locations and setup you location.
+            </p>
+          )}
         </div>
         <div className="flex items-center space-x-4">
           <Button variant="outline" onClick={handleMakeReport}>

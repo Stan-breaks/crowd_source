@@ -25,6 +25,10 @@ const reportSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  decription: {
+    type: String,
+    required: true,
+  },
   created: {
     type: Date,
     default: Date.now,
