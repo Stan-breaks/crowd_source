@@ -46,11 +46,6 @@ export default function Component() {
   }, []);
   return (
     <>
-      {/*
-        the min-h-screen class is the one that is conflicting
-        with the drawer but when removed and the drawer 
-        is open the screen is cut by half,
-      */}
       <div
         className={`grid w-full ${
           drawerStatus ? "" : "min-h-screen"

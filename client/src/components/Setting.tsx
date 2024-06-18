@@ -1,8 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Toggle } from "@/components/ui/toggle";
-
+import { useState } from "react";
+import AccountSetting from "./AccountSetting";
 export default function Component() {
+  const [accountSettings, setAccountSettings] = useState<boolean>(false);
   return (
+  <>
+    {accountSettings? <AccountSetting/>
+    :(
     <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
       <div className="space-y-8">
         <section>
@@ -19,7 +23,12 @@ export default function Component() {
                   Manage your account settings.
                 </p>
               </div>
-              <Button variant="outline">Manage</Button>
+              <Button
+                variant="outline"
+                onClick={() => setAccountSettings(!accountSettings)}
+              >
+                Manage
+              </Button>
             </div>
           </div>
         </section>
@@ -68,5 +77,7 @@ export default function Component() {
         </section>
       </div>
     </main>
-  );
+)}
+</>
+);
 }
