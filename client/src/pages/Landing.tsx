@@ -78,7 +78,7 @@ export default function Component() {
                 alt="crowd"
                 className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
                 height="310"
-                src="https://th.bing.com/th/id/OIG4.698QzXHEmaWfTvSTNDoy?pid=ImgGn"
+                src="http://localhost:3000/static/crowd.jpeg"
                 width="550"
               />
               <div className="flex flex-col justify-center space-y-4">

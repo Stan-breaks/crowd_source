@@ -36,6 +36,7 @@ app.use("/auth", require("./routes/auth"));
 // routes
 app.use("/location", require("./routes/location"));
 app.use("/report", require("./routes/report"));
+app.use("/profile", require("./routes/profile"));
 
 // start server
 app.listen(port, () => {

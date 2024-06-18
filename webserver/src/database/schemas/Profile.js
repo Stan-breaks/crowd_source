@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const profileSchema = new mongoose.schema({
-  avatar: {
+const profileSchema = new mongoose.Schema({
+  avatarUrl: {
     type: String,
     required: true,
   },
