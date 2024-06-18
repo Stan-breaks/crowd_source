@@ -75,14 +75,6 @@ export default function Component() {
                       </span>
                       <span className="font-medium">{item.mortalityRate}</span>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-500 dark:text-gray-400">
-                        Recommended Treatments
-                      </span>
-                      <span className="font-medium">
-                        {item.recommendedTreatments}
-                      </span>
-                    </div>
                   </div>
                 </CardContent>
               </Card>
