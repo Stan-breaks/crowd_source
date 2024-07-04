@@ -30,7 +30,7 @@ export default function Component() {
               alt="Avatar"
               className="rounded-full"
               height="80"
-              src="https://th.bing.com/th/id/OIG3.1sv5HK4IuXWVjjsJ0igE?w=1024&h=1024&rs=1&pid=ImgDetMain"
+              src="http://localhost:3000/static/avatar.jpeg"
               style={{
                 aspectRatio: "80/80",
                 objectFit: "cover",

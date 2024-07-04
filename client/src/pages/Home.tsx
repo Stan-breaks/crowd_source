@@ -35,7 +35,7 @@ export default function Component() {
     settings: false,
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  console.log(import.meta.env.VITE_API_URL);
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -43,7 +43,7 @@ export default function Component() {
     if (userName === "") {
       nagivate("/login");
     }
-  }, []);
+  }, [userName]);
   return (
     <>
       <div
@@ -73,7 +73,7 @@ export default function Component() {
                   className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-gray-900  text-gray-900 dark:text-gray-50 dark:hover:text-gray-50 ${
                     buttonData.home ? "bg-gray-100 dark:bg-gray-800" : ""
                   }`}
-                  href="#"
+                  to="#"
                   onClick={() =>
                     setButtonData({
                       home: true,
@@ -93,7 +93,7 @@ export default function Component() {
                       ? "bg-gray-100 dark:bg-gray-800"
                       : ""
                   }`}
-                  href="#"
+                  to="#"
                   onClick={() =>
                     setButtonData({
                       home: false,
@@ -111,7 +111,7 @@ export default function Component() {
                   className={`flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 ${
                     buttonData.reports ? "bg-gray-100 dark:bg-gray-800" : ""
                   }`}
-                  href="#"
+                  to="#"
                   onClick={() =>
                     setButtonData({
                       home: false,
@@ -129,7 +129,7 @@ export default function Component() {
                   className={`flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 ${
                     buttonData.location ? "bg-gray-100 dark:bg-gray-800" : ""
                   }`}
-                  href="#"
+                  to="#"
                   onClick={() =>
                     setButtonData({
                       home: false,
@@ -147,7 +147,7 @@ export default function Component() {
                   className={`flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 ${
                     buttonData.settings ? "bg-gray-100 dark:bg-gray-800" : ""
                   }`}
-                  href="#"
+                  to="#"
                   onClick={() =>
                     setButtonData({
                       home: false,
@@ -186,12 +186,21 @@ export default function Component() {
               className="rounded-full border border-gray-200 w-8 h-8 dark:border-gray-800"
               size="icon"
               variant="ghost"
+              onClick={() =>
+                setButtonData({
+                  home: false,
+                  participants: false,
+                  reports: false,
+                  location: false,
+                  settings: true,
+                })
+              }
             >
               <img
                 alt="Avatar"
                 className="rounded-full"
                 height="32"
-                src="https://th.bing.com/th/id/OIG3.1sv5HK4IuXWVjjsJ0igE?w=1024&h=1024&rs=1&pid=ImgDetMain"
+                src="http://localhost:3000/static/avatar.jpeg"
                 style={{
                   aspectRatio: "32/32",
                   objectFit: "cover",

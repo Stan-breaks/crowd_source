@@ -1,0 +1,45 @@
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
+const apiUrl = import.meta.env.VITE_API_URL;
+
+interface LoginResponse {
+  token: string;
+  user: {
+    id: string;
+    username: string;
+  };
+}
+
+interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+const loginUser = async (credentials: LoginCredentials) => {
+  const response = await fetch(`${apiUrl}/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(credentials),
+  });
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+  if (!response.ok) {
+    throw new Error("Login failed");
+  }
+  return response.json();
+};
+
+export const useLogin = (): UseMutationResult<
+  LoginResponse,
+  Error,
+  LoginCredentials,
+  unknown
+> => {
+  return useMutation({
+    mutationFn: loginUser,
+    onSuccess: (data: LoginResponse) => {
+      localStorage.clear();
+      localStorage.setItem("token", data.token);
+    },
+  });
+};

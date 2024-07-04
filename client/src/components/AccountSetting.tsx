@@ -68,7 +68,8 @@ export default function Component() {
             <Label htmlFor="bio">Bio</Label>
             <Textarea
               id="bio"
-              className="min-h-[100px]"
+              className="min-h-[100px] bg-slate-800 text-slate-200 border border-slate-700 rounded-md p-4 w-full resize-none"
+              rows={4}
               defaultValue="I'm a software engineer, and I love to code!"
             />
           </div>
@@ -86,7 +87,7 @@ export default function Component() {
             </div>
             <div>
               <Label htmlFor="location">Location</Label>
-              <Input id="location" defaultValue="San Francisco, CA" />
+              <Input id="locationJared Palmer" defaultValue="San Francisco, CA" />
             </div>
             <div>
               <Label htmlFor="job-title">Job Title</Label>

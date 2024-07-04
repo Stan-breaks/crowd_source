@@ -5,46 +5,27 @@ import { Button } from "@/components/ui/button";
 import Loader from "@/components/Loader";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/store/appStore";
-import { setUserName, selectUserName } from "@/features/user/userSlice";
-import { useEffect } from "react";
+import { setUserName } from "@/features/user/userSlice";
+import { useLogin } from "@/features/login/useLogin";
 
 export default function Component() {
-  const dispatch = useDispatch<AppDispatch>();
-  const userName = useSelector<RootState, string>(selectUserName);
   const [user, setUser] = useState({ email: "", password: "" });
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
   const navigate = useNavigate();
-
-  const submitLogin = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch("http://127.0.0.0:3000/auth/login", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(user),
-      });
-      const data = await response.json();
-      if (data.userName) {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        setLoading(false);
-        dispatch(setUserName(data.userName));
-        navigate("/home");
-      } else {
-        throw new Error("Invalid response from the server");
-      }
-    } catch (err) {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setLoading(false);
-      setError(true);
-      console.log(err);
+  const dispatch = useDispatch<AppDispatch>();
+  const userName = useSelector((state: RootState) => state.user.userName);
+  const login = useLogin();
+  const submitLogin = () => {
+    login.mutate(user);
+    if (login.isSuccess) {
+      dispatch(setUserName(login.data.user.username));
+      navigate("/home");
+    }else{
+      login.isError = true;
     }
   };
-
   useEffect(() => {
     if (userName !== "") {
       navigate("/home");
@@ -52,7 +33,7 @@ export default function Component() {
   }, []);
   return (
     <>
-      {loading ? (
+      {login.isPending ? (
         <Loader />
       ) : (
         <div className="flex items-center min-h-screen px-4">
@@ -62,7 +43,7 @@ export default function Component() {
               <p className="text-gray-500 dark:text-gray-400">
                 Enter your email below to login to your account
               </p>
-              {error && (
+              {login.isError && (
                 <div className="text-red-500">Invalid password or email</div>
               )}
             </div>

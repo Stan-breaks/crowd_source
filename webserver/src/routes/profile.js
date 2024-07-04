@@ -64,10 +64,17 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/picture", async (req, res) => {
-  const pictures = await Picture.findAll();
+  const pictures = await Picture.find();
   res.status(200).send(pictures);
 });
 
+router.post("/picture", async (req, res) => {
+  const { url } = req.body;
+  const newPicture = new Picture({
+    url,
+  });
+  await newPicture.save();
+  res.status(201).send("picture created!");
+});
 
 module.exports = router;
-
