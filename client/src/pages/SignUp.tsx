@@ -3,14 +3,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import countryCodes from "@/features/countryCode";
 import Loader from "@/components/Loader";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/store/appStore";
 import { setUserName, selectUserName } from "@/features/user/userSlice";
-
+import { useSignUp } from "@/features/signUp/useSignUp";
 
 export default function Component() {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,46 +22,24 @@ export default function Component() {
     password: "",
     confirmPassword: "",
   });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
   const [prefix, setPrefix] = useState("+1");
   const navigate = useNavigate();
-
-  if (userName !== "") {
-    navigate("/home");
-  }
+  const signUp = useSignUp();
 
   const submitSignUp = async () => {
-    setLoading(true);
-    try {
-      if (user.password !== user.confirmPassword) {
-        throw new Error("passwords don't match");
-      } else if (user.number.length < 9 || user.number.length > 12) {
-        throw new Error("phone number is not valid");
+    if (user.password !== user.confirmPassword) {
+      signUp.isError = true;
+    } else if (user.number.length < 9 || user.number.length > 12) {
+      signUp.isError = true;
+    } else {
+      setUser({ ...user, number: prefix + user.number });
+      signUp.mutate(user);
+      if (signUp.isSuccess) {
+        dispatch(setUserName(signUp.data.user.username));
+        navigate("/home");
       } else {
-        const response = await fetch("http://127.0.0.0:3000/auth/register", {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          method: "POST",
-          body: JSON.stringify(user),
-        });
-        const data = await response.json();
-        if (data.code) {
-          await new Promise((resolve) => setTimeout(resolve, 2000));
-          setLoading(false);
-          console.log(data);
-          dispatch(setUserName(data.userName));
-          navigate("/home");
-        } else {
-          throw new Error("User creation failed try again later");
-        }
+        signUp.isError = true;
       }
-    } catch (err) {
-      console.log(err);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setLoading(false);
-      setError(true);
     }
   };
   useEffect(() => {
@@ -72,7 +50,7 @@ export default function Component() {
 
   return (
     <>
-      {loading ? (
+      {signUp.isPending ? (
         <Loader />
       ) : (
         <div className="flex items-center min-h-screen px-4">
@@ -82,7 +60,7 @@ export default function Component() {
               <p className="text-gray-500 dark:text-gray-400">
                 Enter your information to create an account
               </p>
-              {error && (
+              {signUp.isError && (
                 <div className="text-red-500">
                   verify your details and try again later!
                 </div>

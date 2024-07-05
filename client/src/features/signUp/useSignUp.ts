@@ -1,5 +1,4 @@
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
-import { error } from "console";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 interface SignUpResponse {
@@ -9,9 +8,11 @@ interface SignUpResponse {
     username: string;
   };
 }
+
 interface SignUpCredentials {
   userName: string;
   email: string;
+  number: string;
   password: string;
   confirmPassword: string;
 }
@@ -33,7 +34,7 @@ const signUpUser = async (credentials: SignUpCredentials) => {
 export const useSignUp = (): UseMutationResult<
   SignUpResponse,
   Error,
-SignUpCredentials,
+  SignUpCredentials,
   unknown
 > => {
   return useMutation({

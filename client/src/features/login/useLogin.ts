@@ -22,7 +22,6 @@ const loginUser = async (credentials: LoginCredentials) => {
     },
     body: JSON.stringify(credentials),
   });
-  await new Promise((resolve) => setTimeout(resolve, 2000));
   if (!response.ok) {
     throw new Error("Login failed");
   }
