@@ -3,26 +3,17 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Component() {
   const [avatar, setAvatar] = useState<boolean>(false);
-  let data = [];
-  fetch("http://localhost:3000/profile/picture", {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "GET",
-  })
-    .then((response) => {
-      response.json();
-    })
-    .then((response) => {
-      data = response;
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+  const [userData, setUserData] = useState({
+    avatarUrl: "",
+    name: "",
+    role: "",
+    bio: "",
+    additionalDetails: "",
+  });
   return (
     <div className="w-full max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -87,7 +78,10 @@ export default function Component() {
             </div>
             <div>
               <Label htmlFor="location">Location</Label>
-              <Input id="locationJared Palmer" defaultValue="San Francisco, CA" />
+              <Input
+                id="locationJared Palmer"
+                defaultValue="San Francisco, CA"
+              />
             </div>
             <div>
               <Label htmlFor="job-title">Job Title</Label>

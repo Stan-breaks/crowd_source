@@ -11,4 +11,3 @@ const pictureSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("Picture", pictureSchema);
-

@@ -54,7 +54,7 @@ export default function Component() {
               <p className="text-gray-500 dark:text-gray-400">
                 Enter your information to create an account
               </p>
-              {(signUp.isError || error)&& (
+              {(signUp.isError || error) && (
                 <div className="text-red-500">
                   verify your details and try again later!
                 </div>

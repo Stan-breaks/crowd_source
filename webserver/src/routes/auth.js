@@ -11,28 +11,29 @@ router.post("/register", async (req, res) => {
     const user = await User.findOne({ $or: [{ userName }, { email }] });
     if (user) {
       res.status(400).send("User already exists");
-    }else{if (password === confirmPassword) {
-      const newUser = new User({
-        userName,
-        email,
-        number,
-        password: hashPassword(password),
-      });
-      try {
-        await newUser.save();
-        req.session.user = {
-          userName: newUser.userName,
-        };
-        const tokenUser = { id: newUser.id, username: newUser.userName };
-        const token = jwt.sign(tokenUser, SECRET_KEY, { expiresIn: "1h" });
-        res.status(201).send({ user: tokenUser, code: 201, token });
-      } catch (error) {
-        res.status(500).send({ message: error.message });
-      }
     } else {
-      res.status(400).send("Bad Request");
-    }}
-    
+      if (password === confirmPassword) {
+        const newUser = new User({
+          userName,
+          email,
+          number,
+          password: hashPassword(password),
+        });
+        try {
+          await newUser.save();
+          req.session.user = {
+            userName: newUser.userName,
+          };
+          const tokenUser = { id: newUser.id, username: newUser.userName };
+          const token = jwt.sign(tokenUser, SECRET_KEY, { expiresIn: "1h" });
+          res.status(201).send({ user: tokenUser, code: 201, token });
+        } catch (error) {
+          res.status(500).send({ message: error.message });
+        }
+      } else {
+        res.status(400).send("Bad Request");
+      }
+    }
   } else {
     res.status(400).send("Bad Request");
   }
@@ -85,6 +86,20 @@ router.post("/changePassword", async (req, res) => {
     user.password = newPassword;
     await user.save();
     res.status(200).send({ message: "Password changed" });
+  }
+});
+
+router.post("/logout", (req, res) => {
+  if (req.session.user) {
+    req.session.destroy((err) => {
+      if (err) {
+        res.status(500).send({ message: "Error logging out" });
+      } else {
+        res.status(200).send({ message: "Logged out" });
+      }
+    });
+  } else {
+    res.status(400).send({ message: "Bad Request" });
   }
 });
 

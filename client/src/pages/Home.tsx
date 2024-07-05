@@ -35,7 +35,6 @@ export default function Component() {
     settings: false,
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  console.log(import.meta.env.VITE_API_URL);
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };

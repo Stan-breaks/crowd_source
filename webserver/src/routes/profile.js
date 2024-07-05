@@ -16,7 +16,13 @@ router.get("/", async (req, res) => {
     res.status(404).send({ message: "Profile not found" });
     return;
   }
-  res.status(200).send(profile);
+  res.status(200).send({
+    avatarUrl: profile.avatarUrl,
+    name: profile.name,
+    role: profile.role,
+    bio: profile.bio,
+    additionalDetails: profile.additionalDetails,
+  });
   return;
 });
 
@@ -66,15 +72,6 @@ router.post("/", async (req, res) => {
 router.get("/picture", async (req, res) => {
   const pictures = await Picture.find();
   res.status(200).send(pictures);
-});
-
-router.post("/picture", async (req, res) => {
-  const { url } = req.body;
-  const newPicture = new Picture({
-    url,
-  });
-  await newPicture.save();
-  res.status(201).send("picture created!");
 });
 
 module.exports = router;
