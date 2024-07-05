@@ -5,9 +5,8 @@ import { Button } from "@/components/ui/button";
 import Loader from "@/components/Loader";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "@/store/appStore";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/appStore";
 import { setUserName } from "@/features/user/userSlice";
 import { useLogin } from "@/features/login/useLogin";
 
@@ -15,22 +14,14 @@ export default function Component() {
   const [user, setUser] = useState({ email: "", password: "" });
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const userName = useSelector((state: RootState) => state.user.userName);
   const login = useLogin();
   const submitLogin = () => {
     login.mutate(user);
     if (login.isSuccess) {
       dispatch(setUserName(login.data.user.username));
       navigate("/home");
-    }else{
-      login.isError = true;
     }
   };
-  useEffect(() => {
-    if (userName !== "") {
-      navigate("/home");
-    }
-  }, []);
   return (
     <>
       {login.isPending ? (

@@ -3,18 +3,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import countryCodes from "@/features/countryCode";
 import Loader from "@/components/Loader";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "@/store/appStore";
-import { setUserName, selectUserName } from "@/features/user/userSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/appStore";
+import { setUserName } from "@/features/user/userSlice";
 import { useSignUp } from "@/features/signUp/useSignUp";
 
 export default function Component() {
   const dispatch = useDispatch<AppDispatch>();
-  const userName = useSelector<RootState, string>(selectUserName);
   const [user, setUser] = useState({
     userName: "",
     email: "",
@@ -23,31 +22,26 @@ export default function Component() {
     confirmPassword: "",
   });
   const [prefix, setPrefix] = useState("+1");
+  const [error, setError] = useState(false);
   const navigate = useNavigate();
   const signUp = useSignUp();
 
   const submitSignUp = async () => {
     if (user.password !== user.confirmPassword) {
-      signUp.isError = true;
+      setError(true);
     } else if (user.number.length < 9 || user.number.length > 12) {
-      signUp.isError = true;
+      setError(true);
     } else {
-      setUser({ ...user, number: prefix + user.number });
-      signUp.mutate(user);
+      const updatedUser = { ...user, number: prefix + user.number };
+      signUp.mutate(updatedUser);
       if (signUp.isSuccess) {
         dispatch(setUserName(signUp.data.user.username));
         navigate("/home");
       } else {
-        signUp.isError = true;
+        setError(true);
       }
     }
   };
-  useEffect(() => {
-    if (userName !== "") {
-      navigate("/home");
-    }
-  }, []);
-
   return (
     <>
       {signUp.isPending ? (
@@ -60,7 +54,7 @@ export default function Component() {
               <p className="text-gray-500 dark:text-gray-400">
                 Enter your information to create an account
               </p>
-              {signUp.isError && (
+              {(signUp.isError || error)&& (
                 <div className="text-red-500">
                   verify your details and try again later!
                 </div>

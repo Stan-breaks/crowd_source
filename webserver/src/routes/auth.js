@@ -11,15 +11,13 @@ router.post("/register", async (req, res) => {
     const user = await User.findOne({ $or: [{ userName }, { email }] });
     if (user) {
       res.status(400).send("User already exists");
-    }
-    if (password === confirmPassword) {
+    }else{if (password === confirmPassword) {
       const newUser = new User({
         userName,
         email,
         number,
         password: hashPassword(password),
       });
-
       try {
         await newUser.save();
         req.session.user = {
@@ -33,7 +31,8 @@ router.post("/register", async (req, res) => {
       }
     } else {
       res.status(400).send("Bad Request");
-    }
+    }}
+    
   } else {
     res.status(400).send("Bad Request");
   }
