@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import countryCodes from "@/features/countryCode";
 import Loader from "@/components/Loader";
 import { useNavigate } from "react-router-dom";
@@ -34,14 +34,14 @@ export default function Component() {
     } else {
       const updatedUser = { ...user, number: prefix + user.number };
       signUp.mutate(updatedUser);
-      if (signUp.isSuccess) {
-        dispatch(setUserName(signUp.data.user.username));
-        navigate("/home");
-      } else {
-        setError(true);
-      }
     }
   };
+  useEffect(() => {
+    if (signUp.isSuccess) {
+      dispatch(setUserName(signUp.data.user.username));
+      navigate("/home");
+    }
+  }, [signUp.isSuccess, signUp.data,signUp.isError]);
   return (
     <>
       {signUp.isPending ? (

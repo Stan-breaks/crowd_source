@@ -22,8 +22,11 @@ import { selectUserName } from "@/features/user/userSlice";
 import { selectDrawerStatus } from "@/features/drawer/drawerSlice";
 import { useEffect } from "react";
 import Setting from "@/components/Setting";
+import { useProfile } from "@/features/profile/useProfile";
 
 export default function Component() {
+  const defaultAvatar = `${import.meta.env.VITE_API_URL}/static/avatar.jpeg`;
+  const profile = useProfile();
   const nagivate = useNavigate();
   const userName = useSelector<RootState, string>(selectUserName);
   const drawerStatus = useSelector<RootState, boolean>(selectDrawerStatus);
@@ -42,7 +45,7 @@ export default function Component() {
     if (userName === "") {
       nagivate("/login");
     }
-  }, [userName]);
+  }, []);
   return (
     <>
       <div
@@ -199,7 +202,11 @@ export default function Component() {
                 alt="Avatar"
                 className="rounded-full"
                 height="32"
-                src="http://localhost:3000/static/avatar.jpeg"
+                src={
+                  profile.data?.avatarUrl
+                    ? profile.data.avatarUrl
+                    : defaultAvatar
+                }
                 style={{
                   aspectRatio: "32/32",
                   objectFit: "cover",

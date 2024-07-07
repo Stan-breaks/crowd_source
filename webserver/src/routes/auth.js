@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 const User = require("../database/schemas/User");
+const Profile = require("../database/schemas/Profile");
 const { hashPassword, comparePassword } = require("../utils/helper");
 const SECRET_KEY = process.env.JWT_SECRET;
 const jwt = require("jsonwebtoken");
@@ -21,6 +22,14 @@ router.post("/register", async (req, res) => {
         });
         try {
           await newUser.save();
+          const newProfile = new Profile({
+            avatarUrl: "avatar.jpeg",
+            name: "john doe",
+            bio: "This is my bio",
+            additionalDetails: "I am additted to coffee btw...",
+            user: newUser.id,
+          });
+          await newProfile.save();
           req.session.user = {
             userName: newUser.userName,
           };

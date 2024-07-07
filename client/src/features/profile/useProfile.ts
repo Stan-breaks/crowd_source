@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-interface profileResponse {
+ interface profileResponse {
   avatarUrl: string;
   name: string;
   role: string;

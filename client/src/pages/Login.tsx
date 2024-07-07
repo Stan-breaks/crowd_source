@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/Loader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/appStore";
@@ -17,11 +17,14 @@ export default function Component() {
   const login = useLogin();
   const submitLogin = () => {
     login.mutate(user);
-    if (login.isSuccess) {
+  };
+  useEffect(()=>{
+if (login.isSuccess) {
       dispatch(setUserName(login.data.user.username));
       navigate("/home");
     }
-  };
+
+  },[login.isSuccess,login.data]);
   return (
     <>
       {login.isPending ? (
