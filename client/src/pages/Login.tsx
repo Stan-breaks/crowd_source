@@ -16,15 +16,13 @@ export default function Component() {
   const dispatch = useDispatch<AppDispatch>();
   const login = useLogin();
   const submitLogin = () => {
-    login.mutate(user);
+    login.mutate(user, {
+      onSuccess: () => {
+        login.data && dispatch(setUserName(login.data.user.username));
+        navigate("/home");
+      },
+    });
   };
-  useEffect(()=>{
-if (login.isSuccess) {
-      dispatch(setUserName(login.data.user.username));
-      navigate("/home");
-    }
-
-  },[login.isSuccess,login.data]);
   return (
     <>
       {login.isPending ? (
