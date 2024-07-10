@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/appStore";
 import { setUserName } from "@/features/user/userSlice";
 import { useLogin } from "@/features/login/useLogin";
+import { LoginResponse } from "@/features/login/useLogin";
 
 export default function Component() {
   const [user, setUser] = useState({ email: "", password: "" });
@@ -17,9 +18,9 @@ export default function Component() {
   const login = useLogin();
   const submitLogin = () => {
     login.mutate(user, {
-      onSuccess: () => {
-        login.data && dispatch(setUserName(login.data.user.username));
-        console.log(login.data?.user.username);
+      onSuccess: (data: LoginResponse) => {
+        dispatch(setUserName(data.user.username));
+        console.log(data);
         navigate("/home");
       },
     });

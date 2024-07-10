@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/appStore";
 import { setUserName } from "@/features/user/userSlice";
 import { useSignUp } from "@/features/signUp/useSignUp";
+import { SignUpResponse } from "@/features/signUp/useSignUp";
 
 export default function Component() {
   const dispatch = useDispatch<AppDispatch>();
@@ -34,8 +35,8 @@ export default function Component() {
     } else {
       const updatedUser = { ...user, number: prefix + user.number };
       signUp.mutate(updatedUser, {
-        onSuccess: () => {
-          signUp.data && dispatch(setUserName(signUp.data.user.username));
+        onSuccess: (data: SignUpResponse) => {
+          dispatch(setUserName(data.user.username));
           navigate("/home");
         },
       });

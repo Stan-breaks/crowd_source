@@ -14,7 +14,6 @@ const fetchProfile: QueryFunction<profileResponse, [string, string]> = async ({
   queryKey,
 }) => {
   const [_key, userName] = queryKey;
-  console.log(`key: ${_key}, name: ${userName}`);
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("No token found");

@@ -1,7 +1,7 @@
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 const apiUrl = import.meta.env.VITE_API_URL;
 
-interface LoginResponse {
+export interface LoginResponse {
   user: {
     id: string;
     username: string;
@@ -39,6 +39,9 @@ export const useLogin = (): UseMutationResult<
     onSuccess: (data: LoginResponse) => {
       localStorage.clear();
       localStorage.setItem("token", data.token);
+    },
+    onError: (error: Error) => {
+      throw new Error(error.message);
     },
   });
 };

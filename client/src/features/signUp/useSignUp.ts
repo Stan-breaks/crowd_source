@@ -1,7 +1,8 @@
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
+
 const apiUrl = import.meta.env.VITE_API_URL;
 
-interface SignUpResponse {
+export interface SignUpResponse {
   user: {
     id: string;
     username: string;

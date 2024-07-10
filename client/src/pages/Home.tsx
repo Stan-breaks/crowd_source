@@ -42,7 +42,6 @@ export default function Component() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-  console.log(userName);
   useEffect(() => {
     if (userName === "") {
       nagivate("/login");
