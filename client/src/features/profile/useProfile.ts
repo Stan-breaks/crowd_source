@@ -1,6 +1,6 @@
 import { QueryFunction, useQuery } from "@tanstack/react-query";
 
-interface profileResponse {
+export interface profileResponse {
   avatarUrl: string;
   name: string;
   role: string;
@@ -18,7 +18,7 @@ const fetchProfile: QueryFunction<profileResponse, [string, string]> = async ({
   if (!token) {
     throw new Error("No token found");
   }
-  const response = await fetch(`${apiUrl}/profile?userName=${userName}`, {
+  const response = await fetch(`${apiUrl}/profile/${userName}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

@@ -20,8 +20,16 @@ import {
   CalendarIcon,
   MessageSquareIcon,
 } from "@/components/icons";
+import { profileResponse } from "@/features/profile/useProfile";
 
-export default function Component() {
+interface Props {
+  profile: profileResponse;
+}
+
+const url = import.meta.env.VITE_API_URL;
+
+export default function Component({ profile }: Props) {
+  console.log(profile);
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
       <div className="grid gap-4">
@@ -31,7 +39,7 @@ export default function Component() {
               alt="Avatar"
               className="rounded-full"
               height="80"
-              src="http://localhost:3000/static/avatar.jpeg"
+              src={url+profile.avatarUrl}
               style={{
                 aspectRatio: "80/80",
                 objectFit: "cover",
@@ -39,8 +47,8 @@ export default function Component() {
               width="80"
             />
             <div className="grid gap-1.5">
-              <CardTitle>Dr. Jane Smith</CardTitle>
-              <CardDescription>Chief Medical Officer</CardDescription>
+              <CardTitle>{profile.name}</CardTitle>
+              <CardDescription>{profile.role}</CardDescription>
             </div>
             <Button className="ml-auto w-8 h-8" size="icon">
               <MessageSquareIcon className="w-4 h-4" />

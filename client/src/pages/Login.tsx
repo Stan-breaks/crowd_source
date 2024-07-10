@@ -20,7 +20,6 @@ export default function Component() {
     login.mutate(user, {
       onSuccess: (data: LoginResponse) => {
         dispatch(setUserName(data.user.username));
-        console.log(data);
         navigate("/home");
       },
     });

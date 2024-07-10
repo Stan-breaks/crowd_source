@@ -23,7 +23,7 @@ router.post("/register", async (req, res) => {
         try {
           await newUser.save();
           const newProfile = new Profile({
-            avatarUrl: "avatar.jpeg",
+            avatarUrl: "static/avatar.jpeg",
             name: "john doe",
             bio: "This is my bio",
             role: "Default role",

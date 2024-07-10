@@ -29,7 +29,16 @@ export default function Component() {
   const nagivate = useNavigate();
   const userName = useSelector<RootState, string>(selectUserName);
   const profile = useProfile(userName);
-  console.log(userName);
+  if (profile.data == undefined) {
+    const userProfile = {
+      avatarUrl: "",
+      name: "",
+      role: "",
+      additionalDetails: "",
+    };
+  }else{
+    const userProfile=profile.data;
+  }
   const drawerStatus = useSelector<RootState, boolean>(selectDrawerStatus);
   const [buttonData, setButtonData] = useState({
     home: true,
@@ -218,7 +227,11 @@ export default function Component() {
             </Button>
           </header>
 
-          {buttonData.home ? <DashboardHome /> : <></>}
+          {buttonData.home ? (
+            <DashboardHome profile={profile.data && profile.data} />
+          ) : (
+            <></>
+          )}
           {buttonData.participants ? <DashboardParticipants /> : <></>}
           {buttonData.reports ? <DashboardReport /> : <></>}
           {buttonData.settings ? <Setting /> : <></>}

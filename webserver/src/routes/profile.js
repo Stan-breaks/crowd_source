@@ -4,7 +4,7 @@ const User = require("../database/schemas/User");
 const Profile = require("../database/schemas/Profile");
 const Picture = require("../database/schemas/Picture");
 
-router.get("/", async (req, res) => {
+router.get("/:userName", async (req, res) => {
   const { userName } = req.params;
   const user = await User.findOne({ userName });
   if (!user) {
