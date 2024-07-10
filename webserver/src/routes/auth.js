@@ -26,7 +26,7 @@ router.post("/register", async (req, res) => {
             avatarUrl: "avatar.jpeg",
             name: "john doe",
             bio: "This is my bio",
-            role:"Default role",
+            role: "Default role",
             additionalDetails: "I am additted to coffee btw...",
             user: newUser.id,
           });

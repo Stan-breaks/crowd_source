@@ -1,6 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
+import { QueryFunction, useQuery } from "@tanstack/react-query";
+import { Key } from "lucide-react";
 
- interface profileResponse {
+interface profileResponse {
   avatarUrl: string;
   name: string;
   role: string;
@@ -10,12 +11,16 @@ import { useQuery } from "@tanstack/react-query";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-const fetchProfile = async (): Promise<profileResponse> => {
+const fetchProfile: QueryFunction<profileResponse, [string, string]> = async ({
+  queryKey,
+}) => {
+  const [_key, userName] = queryKey;
+  console.log(_key, userName);
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("No token found");
   }
-  const response = await fetch(`${apiUrl}/profile`, {
+  const response = await fetch(`${apiUrl}/profile?userName=${userName}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -26,9 +31,9 @@ const fetchProfile = async (): Promise<profileResponse> => {
   return response.json();
 };
 
-export const useProfile = () => {
-  return useQuery<profileResponse, Error>({
-    queryKey: ["profileData"],
+export const useProfile = (userName: string) => {
+  return useQuery<profileResponse, Error, profileResponse, [string, string]>({
+    queryKey: ["profileData", userName],
     queryFn: fetchProfile,
   });
 };

@@ -26,9 +26,10 @@ import { useProfile } from "@/features/profile/useProfile";
 
 export default function Component() {
   const defaultAvatar = `${import.meta.env.VITE_API_URL}/static/avatar.jpeg`;
-  const profile = useProfile();
   const nagivate = useNavigate();
   const userName = useSelector<RootState, string>(selectUserName);
+  const profile = useProfile(userName);
+  console.log(userName);
   const drawerStatus = useSelector<RootState, boolean>(selectDrawerStatus);
   const [buttonData, setButtonData] = useState({
     home: true,
@@ -41,6 +42,7 @@ export default function Component() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  console.log(userName);
   useEffect(() => {
     if (userName === "") {
       nagivate("/login");

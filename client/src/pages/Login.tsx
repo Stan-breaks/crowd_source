@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/Loader";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/appStore";
@@ -19,6 +19,7 @@ export default function Component() {
     login.mutate(user, {
       onSuccess: () => {
         login.data && dispatch(setUserName(login.data.user.username));
+        console.log(login.data?.user.username);
         navigate("/home");
       },
     });

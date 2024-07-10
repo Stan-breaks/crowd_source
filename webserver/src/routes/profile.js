@@ -5,7 +5,7 @@ const Profile = require("../database/schemas/Profile");
 const Picture = require("../database/schemas/Picture");
 
 router.get("/", async (req, res) => {
-  const userName = req.session.user.userName;
+  const { userName } = req.params;
   const user = await User.findOne({ userName });
   if (!user) {
     res.status(404).send({ message: "User not found" });
