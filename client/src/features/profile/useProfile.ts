@@ -1,5 +1,4 @@
 import { QueryFunction, useQuery } from "@tanstack/react-query";
-import { Key } from "lucide-react";
 
 interface profileResponse {
   avatarUrl: string;
@@ -15,7 +14,7 @@ const fetchProfile: QueryFunction<profileResponse, [string, string]> = async ({
   queryKey,
 }) => {
   const [_key, userName] = queryKey;
-  console.log(_key, userName);
+  console.log(`key: ${_key}, name: ${userName}`);
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("No token found");

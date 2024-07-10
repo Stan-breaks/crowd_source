@@ -2,11 +2,11 @@ import { useMutation, UseMutationResult } from "@tanstack/react-query";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 interface LoginResponse {
-  token: string;
   user: {
     id: string;
     username: string;
   };
+  token: string;
 }
 
 interface LoginCredentials {
