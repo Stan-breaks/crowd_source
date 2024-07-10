@@ -218,7 +218,7 @@ export default function Component() {
                 height="32"
                 src={
                   profile.data?.avatarUrl
-                    ?url+ "/"+ profile.data.avatarUrl
+                    ? url + "/" + profile.data.avatarUrl
                     : defaultAvatar
                 }
                 style={{
