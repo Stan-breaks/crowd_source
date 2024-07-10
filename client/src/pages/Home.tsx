@@ -22,22 +22,26 @@ import { selectUserName } from "@/features/user/userSlice";
 import { selectDrawerStatus } from "@/features/drawer/drawerSlice";
 import { useEffect } from "react";
 import Setting from "@/components/Setting";
-import { useProfile } from "@/features/profile/useProfile";
+import { profileResponse, useProfile } from "@/features/profile/useProfile";
 
 export default function Component() {
-  const defaultAvatar = `${import.meta.env.VITE_API_URL}/static/avatar.jpeg`;
+  const url = import.meta.env.VITE_API_URL;
+  const defaultAvatar = `${url}/static/avatar.jpeg`;
   const nagivate = useNavigate();
   const userName = useSelector<RootState, string>(selectUserName);
+  let userProfile: profileResponse = {
+    avatarUrl: defaultAvatar,
+    name: " ",
+    bio: " ",
+    role: " ",
+    additionalDetails: " ",
+  };
   const profile = useProfile(userName);
-  if (profile.data == undefined) {
-    const userProfile = {
-      avatarUrl: "",
-      name: "",
-      role: "",
-      additionalDetails: "",
+  if (profile.data != undefined) {
+    userProfile = {
+      ...profile.data,
+      avatarUrl: url + "/" + profile.data.avatarUrl,
     };
-  }else{
-    const userProfile=profile.data;
   }
   const drawerStatus = useSelector<RootState, boolean>(selectDrawerStatus);
   const [buttonData, setButtonData] = useState({
@@ -214,7 +218,7 @@ export default function Component() {
                 height="32"
                 src={
                   profile.data?.avatarUrl
-                    ? profile.data.avatarUrl
+                    ?url+ "/"+ profile.data.avatarUrl
                     : defaultAvatar
                 }
                 style={{
@@ -227,11 +231,7 @@ export default function Component() {
             </Button>
           </header>
 
-          {buttonData.home ? (
-            <DashboardHome profile={profile.data && profile.data} />
-          ) : (
-            <></>
-          )}
+          {buttonData.home ? <DashboardHome profile={userProfile} /> : <></>}
           {buttonData.participants ? <DashboardParticipants /> : <></>}
           {buttonData.reports ? <DashboardReport /> : <></>}
           {buttonData.settings ? <Setting /> : <></>}
