@@ -6,33 +6,34 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/appStore";
-import { useQueryClient } from "@tanstack/react-query";
-import { profileResponse } from "@/features/profile/useProfile";
+import { SettingsResponse, useGetSettings, usePostSettings } from "@/features/profile/useSetting";
 
 export default function Component() {
   const url = import.meta.env.VITE_API_URL;
   const [avatar, setAvatar] = useState<boolean>(false);
-  const [userData, setUserData]: profileResponse = useState({
+  const [userData, setUserData]:SettingsResponse = useState({
     avatarUrl: "",
     name: "",
+    number:"",
+    email:"",
     role: "",
     bio: "",
     additionalDetails: "",
   });
   const userName = useSelector((state: RootState) => state.user.userName);
-  const queryClient = useQueryClient();
   useEffect(() => {
-    const profile = queryClient.getQueryData(["profileData", userName]);
-    if (profile) {
-      setUserData(profile);
+    const profile = useGetSettings(userName);
+    if (profile.data!=undefined){
+      const userProfile =profile.data
+      setUserData(userProfile);
     }
-  }, [userName, queryClient]);
+  }, []);
   return (
     <div className="w-full max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
           <h2 className="text-lg font-medium mb-4">Avatar</h2>
-          <div className="flex items-center gap-4">
+          <div className="flex itemse-center gap-4">
             <Avatar className="h-20 w-20">
               <AvatarImage src={url + "/" + userData.avatarUrl} />
               <AvatarFallback>JP</AvatarFallback>
