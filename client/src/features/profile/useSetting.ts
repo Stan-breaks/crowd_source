@@ -29,7 +29,7 @@ const fetchSettings: QueryFunction<
   if (!token) {
     throw new Error("token not found");
   }
-  const response = await fetch(`${apiUrl}/profile/setting/${userName}`, {
+  const response = await fetch(`${apiUrl}/profile/settings/${userName}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -45,7 +45,7 @@ const postSettings = async (data: {
   settings: SettingsResponse;
 }): Promise<PostResponse> => {
   const token = localStorage.getItem("token");
-  const response = await fetch(`${apiUrl}/profile/setting/${data.userName}`, {
+  const response = await fetch(`${apiUrl}/profile/settings/${data.userName}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,

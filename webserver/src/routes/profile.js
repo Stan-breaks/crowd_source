@@ -64,20 +64,28 @@ router.post("/settings/:userName", async (req, res) => {
   }
   const { avatarUrl, name, email, number, role, bio, additionalDetails } =
     req.body;
-  if(!avatarUrl||!name||!email||!number||!role||!bio||!additionalDetails){
-    res.status(500).send({message:"missing values"})
+  if (
+    !avatarUrl ||
+    !name ||
+    !email ||
+    !number ||
+    !role ||
+    !bio ||
+    !additionalDetails
+  ) {
+    res.status(500).send({ message: "missing values" });
     return;
   }
-  profile.avatarUrl=avatarUrl;
-  profile.name=name;
-  profile.bio=bio;
-  profile.role=role;
-  profile.additionalDetails=additionalDetails;
-  user.email=email;
-  user.number=number;
+  profile.avatarUrl = avatarUrl;
+  profile.name = name;
+  profile.bio = bio;
+  profile.role = role;
+  profile.additionalDetails = additionalDetails;
+  user.email = email;
+  user.number = number;
   await profile.save();
   await user.save();
-  res.status(200).send({message:"successful edit"});
+  res.status(200).send({ message: "successful edit" });
   return;
 });
 

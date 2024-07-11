@@ -6,25 +6,29 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/appStore";
-import { SettingsResponse, useGetSettings, usePostSettings } from "@/features/profile/useSetting";
+import {
+  SettingsResponse,
+  useGetSettings,
+  usePostSettings,
+} from "@/features/profile/useSetting";
 
 export default function Component() {
   const url = import.meta.env.VITE_API_URL;
   const [avatar, setAvatar] = useState<boolean>(false);
-  const [userData, setUserData]:SettingsResponse = useState({
+  const [userData, setUserData]: SettingsResponse = useState({
     avatarUrl: "",
     name: "",
-    number:"",
-    email:"",
+    number: "",
+    email: "",
     role: "",
     bio: "",
     additionalDetails: "",
   });
   const userName = useSelector((state: RootState) => state.user.userName);
+  const profile = useGetSettings(userName);
   useEffect(() => {
-    const profile = useGetSettings(userName);
-    if (profile.data!=undefined){
-      const userProfile =profile.data
+    if (profile.data != undefined) {
+      const userProfile = profile.data;
       setUserData(userProfile);
     }
   }, []);
@@ -36,7 +40,6 @@ export default function Component() {
           <div className="flex itemse-center gap-4">
             <Avatar className="h-20 w-20">
               <AvatarImage src={url + "/" + userData.avatarUrl} />
-              <AvatarFallback>JP</AvatarFallback>
             </Avatar>
             <div>
               <Button variant="outline" onClick={() => setAvatar(!avatar)}>
@@ -73,7 +76,32 @@ export default function Component() {
           </div>
           <div>
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" defaultValue="example@acme.inc" />
+            <Input
+              id="email"
+              type="email"
+              value={userData.email}
+              onChange={(e) =>
+                setUserData({ ...userData, email: e.target.value })
+              }
+            />
+          </div>
+          <div>
+            <Label htmlFor="phone">Phone</Label>
+            <Input
+              id="phone"
+              value={userData.number}
+              onChange={(e) =>
+                setUserData({ ...userData, number: e.target.value })
+              }
+            />
+          </div>
+          <div>
+            <Label htmlFor="job-title">Job Title</Label>
+            <Input
+              id="job-title"
+              value={userData.role}
+              onChange={(e) => setUserData(e.target.value)}
+            />
           </div>
           <div>
             <Label htmlFor="bio">Bio</Label>
@@ -87,25 +115,20 @@ export default function Component() {
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 space-y-6 col-span-full">
           <h2 className="text-lg font-medium">Additional Details</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
             <div>
-              <Label htmlFor="phone">Phone</Label>
-              <Input id="phone" defaultValue="+1 (555) 555-5555" />
-            </div>
-            <div>
-              <Label htmlFor="website">Website</Label>
-              <Input id="website" defaultValue="https://example.com" />
-            </div>
-            <div>
-              <Label htmlFor="location">Location</Label>
-              <Input
-                id="locationJared Palmer"
-                defaultValue="San Francisco, CA"
+              <Textarea
+                id="about"
+                className="min-h-[100px] bg-slate-800 text-slate-200 border border-slate-700 rounded-md p-4 w-full resize-none"
+                rows={4}
+                value={userData.additionalDetails}
+                onChange={(e) =>
+                  setUserData({
+                    ...userData,
+                    additionalDetails: e.target.value,
+                  })
+                }
               />
-            </div>
-            <div>
-              <Label htmlFor="job-title">Job Title</Label>
-              <Input id="job-title" defaultValue="Software Engineer" />
             </div>
           </div>
         </div>
