@@ -4,16 +4,29 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/appStore";
+import { useQueryClient } from "@tanstack/react-query";
+import { profileResponse } from "@/features/profile/useProfile";
 
 export default function Component() {
+  const url = import.meta.env.VITE_API_URL;
   const [avatar, setAvatar] = useState<boolean>(false);
-  const [userData, setUserData] = useState({
+  const [userData, setUserData]: profileResponse = useState({
     avatarUrl: "",
     name: "",
     role: "",
     bio: "",
     additionalDetails: "",
   });
+  const userName = useSelector((state: RootState) => state.user.userName);
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    const profile = queryClient.getQueryData(["profileData", userName]);
+    if (profile) {
+      setUserData(profile);
+    }
+  }, [userName, queryClient]);
   return (
     <div className="w-full max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -21,7 +34,7 @@ export default function Component() {
           <h2 className="text-lg font-medium mb-4">Avatar</h2>
           <div className="flex items-center gap-4">
             <Avatar className="h-20 w-20">
-              <AvatarImage src="/placeholder-user.jpg" />
+              <AvatarImage src={url + "/" + userData.avatarUrl} />
               <AvatarFallback>JP</AvatarFallback>
             </Avatar>
             <div>
@@ -49,7 +62,13 @@ export default function Component() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 space-y-6">
           <div>
             <Label htmlFor="name">Name</Label>
-            <Input id="name" defaultValue="Jared Palmer" />
+            <Input
+              id="name"
+              value={userData.name}
+              onChange={(e) =>
+                setUserData({ ...userData, name: e.target.value })
+              }
+            />
           </div>
           <div>
             <Label htmlFor="email">Email</Label>

@@ -26,8 +26,8 @@ router.get("/:userName", async (req, res) => {
   return;
 });
 
-router.post("/", async (req, res) => {
-  const userName = req.session.user.userName;
+router.get("/settings/:userName", async (req, res) => {
+  const { userName } = req.params;
   const user = await User.findOne({ userName });
   if (!user) {
     res.status(404).send({ message: "User not found" });
@@ -36,37 +36,49 @@ router.post("/", async (req, res) => {
   const profile = await Profile.findOne({ user: user._id });
   if (!profile) {
     res.status(404).send({ message: "Profile not found" });
-    const { avatarUrl, name, role, bio, additionalDetails } = req.body;
-    const newProfile = new Profile({
-      avatarUrl,
-      name,
-      role,
-      bio,
-      additionalDetails,
-      user: user._id,
-    });
-    await newProfile.save();
-    res.status(201).send("profile created!");
     return;
   }
-  const { avatarUrl, name, role, bio, additionalDetails } = req.body;
-  if (avatarUrl) {
-    profile.avatarUrl = avatarUrl;
+  res.status(200).send({
+    avatarUrl: profile.avatarUrl,
+    name: profile.name,
+    email: user.email,
+    number: user.number,
+    role: profile.role,
+    bio: profile.bio,
+    additionalDetails: profile.additionalDetails,
+  });
+  return;
+});
+
+router.post("/settings/:userName", async (req, res) => {
+  const { userName } = req.params;
+  const user = await User.findOne({ userName });
+  if (!user) {
+    res.status(404).send({ message: "User not found" });
+    return;
   }
-  if (name) {
-    profile.name = name;
+  const profile = await Profile.findOne({ user: user._id });
+  if (!profile) {
+    res.status(404).send({ message: "Profile not found" });
+    return;
   }
-  if (role) {
-    profile.role = role;
+  const { avatarUrl, name, email, number, role, bio, additionalDetails } =
+    req.body;
+  if(!avatarUrl||!name||!email||!number||!role||!bio||!additionalDetails){
+    res.status(500).send({message:"missing values"})
+    return;
   }
-  if (bio) {
-    profile.bio = bio;
-  }
-  if (additionalDetails) {
-    profile.additionalDetails = additionalDetails;
-  }
+  profile.avatarUrl=avatarUrl;
+  profile.name=name;
+  profile.bio=bio;
+  profile.role=role;
+  profile.additionalDetails=additionalDetails;
+  user.email=email;
+  user.number=number;
   await profile.save();
-  res.status(200).send("profile updated!");
+  await user.save();
+  res.status(200).send({message:"successful edit"});
+  return;
 });
 
 router.get("/picture", async (req, res) => {
