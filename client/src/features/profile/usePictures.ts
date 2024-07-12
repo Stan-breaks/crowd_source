@@ -1,9 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 export interface PictureResponse {
-  pictures: [
-  _id:string,
-  url:string,
-];
+  pictures: [_id: string, url: string];
 }
 
 const apiUrl = import.meta.env.VITE_API_URL;

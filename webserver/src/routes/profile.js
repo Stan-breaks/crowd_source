@@ -4,6 +4,12 @@ const User = require("../database/schemas/User");
 const Profile = require("../database/schemas/Profile");
 const Picture = require("../database/schemas/Picture");
 
+router.get("/picture", async (req, res) => {
+  const pictures = await Picture.find();
+  res.status(200).send(pictures);
+  return;
+});
+
 router.get("/:userName", async (req, res) => {
   const { userName } = req.params;
   const user = await User.findOne({ userName });
@@ -87,11 +93,6 @@ router.post("/settings/:userName", async (req, res) => {
   await user.save();
   res.status(200).send({ message: "successful edit" });
   return;
-});
-
-router.get("/picture", async (req, res) => {
-  const pictures = await Picture.find();
-  res.status(200).send(pictures);
 });
 
 module.exports = router;
