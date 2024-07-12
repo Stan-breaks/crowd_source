@@ -6,11 +6,12 @@ import { useState, useEffect } from "react";
 
 export default function Component() {
   const [showReport, setShowReport] = useState<boolean>(true);
-  const [location, setLocation] = useState<string>(true);
+  const [location, setLocation] = useState<boolean>(true);
   const handleMakeReport = () => {
     setShowReport(!showReport);
   };
   console.log(healthData.length);
+
   useEffect(() => {
     if (healthData.length === 0) {
       setLocation(false);
@@ -65,9 +66,9 @@ export default function Component() {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="text-gray-500 dark:text-gray-400">
-                        Prevalence
+                        Cases
                       </span>
-                      <span className="font-medium">{item.prevalence}</span>
+                      <span className="font-medium">{item.cases}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-gray-500 dark:text-gray-400">

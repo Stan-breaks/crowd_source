@@ -11,6 +11,7 @@ import {
   useGetSettings,
   usePostSettings,
 } from "@/features/profile/useSetting";
+import { usePictures } from "@/features/profile/usePictures";
 
 export default function Component() {
   const url = import.meta.env.VITE_API_URL;
@@ -26,21 +27,30 @@ export default function Component() {
   });
   const userName = useSelector((state: RootState) => state.user.userName);
   const profile = useGetSettings(userName);
+  const pictures = usePictures();
+  const data = pictures.data;
   useEffect(() => {
     if (profile.data != undefined) {
       const userProfile = profile.data;
       setUserData(userProfile);
     }
-  }, []);
+  }, [profile.data]);
   return (
     <div className="w-full max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
           <h2 className="text-lg font-medium mb-4">Avatar</h2>
           <div className="flex itemse-center gap-4">
-            <Avatar className="h-20 w-20">
-              <AvatarImage src={url + "/" + userData.avatarUrl} />
-            </Avatar>
+            <img
+              alt={userData.avatarUrl}
+              className="rounded-full h-20 w-20"
+              src={url + "/" + userData.avatarUrl}
+              style={{
+                aspectRatio: "80/80",
+                objectFit: "cover",
+              }}
+            />
+
             <div>
               <Button variant="outline" onClick={() => setAvatar(!avatar)}>
                 Change Avatar
@@ -52,10 +62,18 @@ export default function Component() {
                 <div className="mt-4">
                   <div className="grid grid-cols-3 gap-4">
                     {data.map((avatar) => (
-                      <Avatar className="h-16 w-16" key={avatar.id}>
-                        <AvatarImage src={avatar.url} />
-                        <AvatarFallback>{avatar.name}</AvatarFallback>
-                      </Avatar>
+                      <img
+                        key={avatar._id}
+                        alt={avatar.url}
+                        className="rounded-full"
+                        height="80"
+                        src={url + "/" + avatar.url}
+                        style={{
+                          aspectRatio: "80/80",
+                          objectFit: "cover",
+                        }}
+                        width="80"
+                      />
                     ))}
                   </div>
                 </div>
