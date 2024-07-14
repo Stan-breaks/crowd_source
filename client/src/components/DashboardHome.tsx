@@ -1,17 +1,8 @@
 import {
-  CardTitle,
-  CardDescription,
   CardContent,
   Card,
   CardHeader,
 } from "@/components/ui/card";
-import {
-  UserIcon,
-  MapPinIcon,
-  CalendarIcon,
-  MessageSquareIcon,
-  UsersIcon,
-} from "@/components/icons";
 import { Separator } from "@/components/ui/separator";
 import { profileResponse } from "@/features/profile/useProfile";
 
