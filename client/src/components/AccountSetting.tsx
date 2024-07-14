@@ -31,7 +31,14 @@ export default function Component() {
   const data = pictures.data;
   const post = usePostSettings();
   const submitUpdate = () => {
-    post.mutate({ userName: userName, settings: userData });
+    post.mutate(
+      { userName: userName, settings: userData },
+      {
+        onError: (error: Error) => {
+          console.log(error);
+        },
+      },
+    );
   };
   useEffect(() => {
     if (profile.data != undefined) {
@@ -46,14 +53,6 @@ export default function Component() {
       ) : (
         <div className="w-full max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {post.isError && (
-              <div
-                className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-                role="alert"
-              >
-                <strong className="font-bold">Error!</strong>
-              </div>
-            )}
             {post.isSuccess && (
               <div
                 className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
@@ -85,7 +84,7 @@ export default function Component() {
                   {avatar && (
                     <div className="mt-4">
                       <div className="grid grid-cols-3 gap-4">
-                        {data &&
+                        {data &&https://fmovies24.to/movie/boy-kills-world-m3o48/1-1
                           data.map((avatar: { _id: string; url: string }) => (
                             <img
                               key={avatar._id}
