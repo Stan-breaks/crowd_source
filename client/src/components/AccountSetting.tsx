@@ -3,20 +3,16 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/appStore";
-import {
-  SettingsResponse,
-  useGetSettings,
-  usePostSettings,
-} from "@/features/profile/useSetting";
+import { useGetSettings, usePostSettings } from "@/features/profile/useSetting";
 import { usePictures } from "@/features/profile/usePictures";
 import Loader from "@/components/Loader";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Component() {
+  const { toast } = useToast();
   const url = import.meta.env.VITE_API_URL;
   const [avatar, setAvatar] = useState<boolean>(false);
-  const [userData, setUserData]: SettingsResponse = useState({
+  const [userData, setUserData] = useState({
     avatarUrl: "",
     name: "",
     number: "",
@@ -25,7 +21,7 @@ export default function Component() {
     bio: "",
     additionalDetails: "",
   });
-  const userName = useSelector((state: RootState) => state.user.userName);
+  const userName = localStorage.getItem("userName") || "";
   const profile = useGetSettings(userName);
   const pictures = usePictures();
   const data = pictures.data;
@@ -34,8 +30,17 @@ export default function Component() {
     post.mutate(
       { userName: userName, settings: userData },
       {
+        onSuccess: () => {
+
+         window.location.reload(); 
+        },
         onError: (error: Error) => {
           console.log(error);
+          toast({
+            title: "Error",
+            description: "Update Failed",
+            variant: "destructive",
+          });
         },
       },
     );
@@ -53,14 +58,6 @@ export default function Component() {
       ) : (
         <div className="w-full max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {post.isSuccess && (
-              <div
-                className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
-                role="alert"
-              >
-                <strong className="font-bold">Success!</strong>
-              </div>
-            )}
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
               <h2 className="text-lg font-medium mb-4">Avatar</h2>
               <div className="flex itemse-center gap-4">
@@ -84,7 +81,7 @@ export default function Component() {
                   {avatar && (
                     <div className="mt-4">
                       <div className="grid grid-cols-3 gap-4">
-                        {data &&https://fmovies24.to/movie/boy-kills-world-m3o48/1-1
+                        {data &&
                           data.map((avatar: { _id: string; url: string }) => (
                             <img
                               key={avatar._id}
@@ -148,7 +145,9 @@ export default function Component() {
                 <Input
                   id="job-title"
                   value={userData.role}
-                  onChange={(e) => setUserData(e.target.value)}
+                  onChange={(e) =>
+                    setUserData({ ...userData, role: e.target.value })
+                  }
                 />
               </div>
               <div>

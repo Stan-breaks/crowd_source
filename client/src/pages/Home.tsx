@@ -18,7 +18,6 @@ import DashboardReport from "@/components/DashboardReport";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "@/store/appStore";
-import { selectUserName } from "@/features/user/userSlice";
 import { selectDrawerStatus } from "@/features/drawer/drawerSlice";
 import { useEffect } from "react";
 import Setting from "@/components/Setting";
@@ -27,8 +26,8 @@ import { profileResponse, useProfile } from "@/features/profile/useProfile";
 export default function Component() {
   const url = import.meta.env.VITE_API_URL;
   const defaultAvatar = `${url}/static/avatar.jpeg`;
-  const nagivate = useNavigate();
-  const userName = useSelector<RootState, string>(selectUserName);
+  const userName = localStorage.getItem("userName") || "";
+  const navigate = useNavigate();
   let userProfile: profileResponse = {
     avatarUrl: defaultAvatar,
     name: " ",
@@ -55,9 +54,13 @@ export default function Component() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  console.log(userName);
   useEffect(() => {
     if (userName === "") {
-      nagivate("/login");
+      navigate("/login");
+    }
+    if(profile.isError){
+      navigate("/login")
     }
   }, []);
   return (

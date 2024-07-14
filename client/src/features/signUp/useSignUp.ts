@@ -2,7 +2,7 @@ import { useMutation, UseMutationResult } from "@tanstack/react-query";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-export interface SignUpResponse {
+interface SignUpResponse {
   user: {
     id: string;
     username: string;
@@ -43,6 +43,7 @@ export const useSignUp = (): UseMutationResult<
     onSuccess: (data: SignUpResponse) => {
       localStorage.clear();
       localStorage.setItem("token", data.token);
+      localStorage.setItem("userName", data.user.username);
     },
   });
 };

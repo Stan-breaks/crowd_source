@@ -5,22 +5,26 @@ import { Button } from "@/components/ui/button";
 import Loader from "@/components/Loader";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/store/appStore";
-import { setUserName } from "@/features/user/userSlice";
 import { useLogin } from "@/features/login/useLogin";
-import { LoginResponse } from "@/features/login/useLogin";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Component() {
+  const {toast} = useToast();
   const [user, setUser] = useState({ email: "", password: "" });
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
   const login = useLogin();
   const submitLogin = () => {
     login.mutate(user, {
-      onSuccess: (data: LoginResponse) => {
-        dispatch(setUserName(data.user.username));
+      onSuccess: () => {
         navigate("/home");
+      },
+      onError: (error: Error) => {
+        console.log(error);
+        toast({
+          title: "Error",
+          description: "Login Failed",
+          variant: "destructive",
+        });
       },
     });
   };
