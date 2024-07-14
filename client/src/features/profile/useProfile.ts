@@ -25,7 +25,6 @@ const fetchProfile: QueryFunction<profileResponse, [string, string]> = async ({
   });
   if (!response.ok) {
     throw new Error("Error with fetching");
-    window.location.href = "/login";
   }
   return response.json();
 };

@@ -6,10 +6,8 @@ import Loader from "@/components/Loader";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLogin } from "@/features/login/useLogin";
-import { useToast } from "@/components/ui/use-toast";
 
 export default function Component() {
-  const {toast} = useToast();
   const [user, setUser] = useState({ email: "", password: "" });
   const navigate = useNavigate();
   const login = useLogin();
@@ -20,11 +18,6 @@ export default function Component() {
       },
       onError: (error: Error) => {
         console.log(error);
-        toast({
-          title: "Error",
-          description: "Login Failed",
-          variant: "destructive",
-        });
       },
     });
   };

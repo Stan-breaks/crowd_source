@@ -6,10 +6,8 @@ import { useState, useEffect } from "react";
 import { useGetSettings, usePostSettings } from "@/features/profile/useSetting";
 import { usePictures } from "@/features/profile/usePictures";
 import Loader from "@/components/Loader";
-import { useToast } from "@/components/ui/use-toast";
 
 export default function Component() {
-  const { toast } = useToast();
   const url = import.meta.env.VITE_API_URL;
   const [avatar, setAvatar] = useState<boolean>(false);
   const [userData, setUserData] = useState({
@@ -31,16 +29,10 @@ export default function Component() {
       { userName: userName, settings: userData },
       {
         onSuccess: () => {
-
-         window.location.reload(); 
+          window.location.reload();
         },
         onError: (error: Error) => {
           console.log(error);
-          toast({
-            title: "Error",
-            description: "Update Failed",
-            variant: "destructive",
-          });
         },
       },
     );
@@ -58,6 +50,9 @@ export default function Component() {
       ) : (
         <div className="w-full max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {post.isError && (
+              <div className="text-red-500">An error occured</div>
+            )}
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
               <h2 className="text-lg font-medium mb-4">Avatar</h2>
               <div className="flex itemse-center gap-4">
@@ -156,7 +151,10 @@ export default function Component() {
                   id="bio"
                   className="min-h-[100px] bg-slate-800 text-slate-200 border border-slate-700 rounded-md p-4 w-full resize-none"
                   rows={4}
-                  defaultValue="I'm a software engineer, and I love to code!"
+                  value={userData.bio}
+                  onChange={(e) =>
+                    setUserData({ ...userData, bio: e.target.value })
+                  }
                 />
               </div>
             </div>

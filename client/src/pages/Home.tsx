@@ -54,13 +54,12 @@ export default function Component() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-  console.log(userName);
   useEffect(() => {
     if (userName === "") {
       navigate("/login");
     }
-    if(profile.isError){
-      navigate("/login")
+    if (profile.isError) {
+      navigate("/login");
     }
   }, []);
   return (
