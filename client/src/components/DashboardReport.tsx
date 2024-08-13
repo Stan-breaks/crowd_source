@@ -1,5 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { CardContent, Card } from "@/components/ui/card";
+import { CardContent, Card, CardHeader, CardFooter, CardTitle, CardDescription } from "@/components/ui/card";
+import { Select, SelectItem, SelectGroup, SelectValue, SelectContent, SelectTrigger, } from "@/components/ui/select"
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { DownloadIcon } from "@/components/icons";
 import { healthData } from "@/features/data";
 import { useState, useEffect } from "react";
@@ -82,9 +86,53 @@ export default function Component() {
             ))}
           </>
         ) : (
-          <></>
+          <><Card className="w-full max-w-lg mx-auto">
+            <CardHeader>
+              <CardTitle className="text-xl sm:text-2xl">Report Disease Outbreak</CardTitle>
+              <CardDescription className="text-sm sm:text-base">Please provide the following details to help us address the situation.</CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="disease">Disease Name</Label>
+                <Input id="disease" placeholder="Enter the disease name" />
+              </div>
+              <div className="flex">
+                <select
+                  className="border border-300 rounded-lg px-2 py-1 w-40 h-10"
+                >
+                  <option key="1" value="city1">
+                    1 city1
+                  </option>
+                  <option key="2" value="city2">
+                    2 city2
+                  </option>
+
+                </select>
+              </div>              <div className="grid gap-2">
+                <Label htmlFor="cases">Reported Cases</Label>
+                <Input id="cases" type="number" placeholder="Number of reported cases" />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="population">Affected Population Size</Label>
+                <Input id="population" type="number" placeholder="Approximate population size" />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="description">Situation Description</Label>
+                <Textarea
+                  id="description"
+                  className="min-h-[100px] bg-slate-800 text-slate-200 border border-slate-700 rounded-md p-4 w-full resize-none"
+                  rows={4}
+                  placeholder="Provide details about the outbreak and its impact"
+                />
+
+              </div>
+            </CardContent>
+            <CardFooter className="flex justify-end">
+              <Button type="submit" className="w-full sm:w-auto">Report Outbreak</Button>
+            </CardFooter>
+          </Card></>
         )}
       </div>
-    </div>
+    </div >
   );
 }
