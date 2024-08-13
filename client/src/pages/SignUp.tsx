@@ -25,7 +25,7 @@ export default function Component() {
   const submitSignUp = async () => {
     if (user.password !== user.confirmPassword) {
       setError(true);
-    } else if (user.number.length < 9 || user.number.length > 12) {
+    } else if (user.number.length < 5 || user.number.length > 9) {
       setError(true);
     } else {
       const updatedUser = { ...user, number: prefix + user.number };
