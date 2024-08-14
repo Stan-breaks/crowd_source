@@ -15,6 +15,7 @@ import {
 import DashboardHome from "@/components/DashboardHome";
 import DashboardParticipants from "@/components/DashboardParticipants";
 import DashboardReport from "@/components/DashboardReport";
+import Location from "@/components/Location"
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "@/store/appStore";
@@ -65,14 +66,12 @@ export default function Component() {
   return (
     <>
       <div
-        className={`grid w-full ${
-          drawerStatus ? "" : "min-h-screen"
-        } lg:grid-cols-[280px_1fr]`}
+        className={`grid w-full ${drawerStatus ? "" : "min-h-screen"
+          } lg:grid-cols-[280px_1fr]`}
       >
         <div
-          className={`border-r bg-gray-100/40 lg:block dark:bg-gray-800/40 ${
-            isMenuOpen ? "block" : "hidden"
-          }`}
+          className={`border-r bg-gray-100/40 lg:block dark:bg-gray-800/40 ${isMenuOpen ? "block" : "hidden"
+            }`}
         >
           <div className="flex h-full max-h-screen flex-col gap-2">
             <div className="flex h-[60px] items-center border-b px-6">
@@ -88,9 +87,8 @@ export default function Component() {
             <div className="flex-1 overflow-auto py-2">
               <nav className="grid items-start px-4 text-sm font-medium">
                 <Link
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-gray-900  text-gray-900 dark:text-gray-50 dark:hover:text-gray-50 ${
-                    buttonData.home ? "bg-gray-100 dark:bg-gray-800" : ""
-                  }`}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-gray-900  text-gray-900 dark:text-gray-50 dark:hover:text-gray-50 ${buttonData.home ? "bg-gray-100 dark:bg-gray-800" : ""
+                    }`}
                   to="#"
                   onClick={() =>
                     setButtonData({
@@ -106,11 +104,10 @@ export default function Component() {
                   Home
                 </Link>
                 <Link
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 ${
-                    buttonData.participants
-                      ? "bg-gray-100 dark:bg-gray-800"
-                      : ""
-                  }`}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 ${buttonData.participants
+                    ? "bg-gray-100 dark:bg-gray-800"
+                    : ""
+                    }`}
                   to="#"
                   onClick={() =>
                     setButtonData({
@@ -126,9 +123,8 @@ export default function Component() {
                   Participants
                 </Link>
                 <Link
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 ${
-                    buttonData.reports ? "bg-gray-100 dark:bg-gray-800" : ""
-                  }`}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 ${buttonData.reports ? "bg-gray-100 dark:bg-gray-800" : ""
+                    }`}
                   to="#"
                   onClick={() =>
                     setButtonData({
@@ -144,9 +140,8 @@ export default function Component() {
                   Reports
                 </Link>
                 <Link
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 ${
-                    buttonData.location ? "bg-gray-100 dark:bg-gray-800" : ""
-                  }`}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 ${buttonData.location ? "bg-gray-100 dark:bg-gray-800" : ""
+                    }`}
                   to="#"
                   onClick={() =>
                     setButtonData({
@@ -162,9 +157,8 @@ export default function Component() {
                   Locations
                 </Link>
                 <Link
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 ${
-                    buttonData.settings ? "bg-gray-100 dark:bg-gray-800" : ""
-                  }`}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 ${buttonData.settings ? "bg-gray-100 dark:bg-gray-800" : ""
+                    }`}
                   to="#"
                   onClick={() =>
                     setButtonData({
@@ -235,6 +229,7 @@ export default function Component() {
 
           {buttonData.home ? <DashboardHome profile={userProfile} /> : <></>}
           {buttonData.participants ? <DashboardParticipants /> : <></>}
+          {buttonData.location ? <Location /> : <></>}
           {buttonData.reports ? <DashboardReport /> : <></>}
           {buttonData.settings ? <Setting /> : <></>}
         </div>
