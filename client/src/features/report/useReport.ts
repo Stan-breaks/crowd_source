@@ -7,19 +7,22 @@ import {
 export interface PostResponse {
   message: string;
 }
-
+export interface ReportsResponse {
+  disease: string;
+  numberOfCases: number;
+  address: string;
+  numberOfDeaths: number;
+  approximatedPopulationCloseBy: number;
+  decription: string;
+}
 const apiUrl = import.meta.env.VITE_API_URL;
 
-const fetchSettings: QueryFunction<
-  SettingsResponse,
-  [string, string]
-> = async ({ queryKey }) => {
-  const [key, userName] = queryKey;
+const fetchReports: QueryFunction<ReportsResponse> = async () => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("token not found");
   }
-  const response = await fetch(`${apiUrl}/profile/settings/${userName}`, {
+  const response = await fetch(`${apiUrl}/report`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -30,18 +33,18 @@ const fetchSettings: QueryFunction<
   return response.json();
 };
 
-const postSettings = async (data: {
+const postReports = async (data: {
   userName: string;
-  settings: SettingsResponse;
+  reports: ReportsResponse;
 }): Promise<PostResponse> => {
   const token = localStorage.getItem("token");
-  const response = await fetch(`${apiUrl}/profile/settings/${data.userName}`, {
+  const response = await fetch(`${apiUrl}report/${data.userName}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
       "content-Type": "application/json",
     },
-    body: JSON.stringify(data.settings),
+    body: JSON.stringify(data.reports),
   });
   if (!response.ok) {
     throw new Error("post failed");
@@ -49,19 +52,19 @@ const postSettings = async (data: {
   return response.json();
 };
 
-export const usePostSettings = (): UseMutationResult<
+export const usePostReports = (): UseMutationResult<
   PostResponse,
   Error,
-  { userName: string; settings: SettingsResponse },
+  { userName: string; reports: ReportsResponse },
   unknown
 > => {
   return useMutation({
-    mutationFn: postSettings,
+    mutationFn: postReports,
   });
 };
 export const useGetSettings = (userName: string) => {
   return useQuery({
     queryKey: ["profileSettings", userName],
-    queryFn: fetchSettings,
+    queryFn: fetchReports,
   });
 };

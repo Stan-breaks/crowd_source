@@ -7,8 +7,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { DownloadIcon } from "@/components/icons";
 import { healthData } from "@/features/data";
 import { useState, useEffect } from "react";
+import { ReportsResponse } from "@/features/report/useReport";
 
 export default function Component() {
+  const [report, setReport] = useState<ReportsResponse>({ disease: "", numberOfCases: 0, numberOfDeaths: 0, decription: "", approximatedPopulationCloseBy: 0, address: "" })
   const [showReport, setShowReport] = useState<boolean>(true);
   const [location, setLocation] = useState<boolean>(true);
   const handleMakeReport = () => {
@@ -16,6 +18,9 @@ export default function Component() {
   };
   console.log(healthData.length);
 
+  const submitReport = () => {
+
+  }
   useEffect(() => {
     if (healthData.length === 0) {
       setLocation(false);
@@ -94,7 +99,7 @@ export default function Component() {
             <CardContent className="grid gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="disease">Disease Name</Label>
-                <Input id="disease" placeholder="Enter the disease name" />
+                <Input id="disease" placeholder="Enter the disease name" value={report.disease} onChange={(e) => setReport({ ...report, disease: e.target.value })} />
               </div>
               <div className="flex">
                 <select
@@ -108,13 +113,19 @@ export default function Component() {
                   </option>
 
                 </select>
-              </div>              <div className="grid gap-2">
-                <Label htmlFor="cases">Reported Cases</Label>
-                <Input id="cases" type="number" placeholder="Number of reported cases" />
               </div>
               <div className="grid gap-2">
+                <Label htmlFor="cases">Reported Cases</Label>
+                <Input id="cases" type="number" placeholder="Number of reported cases" value={report.numberOfCases} onChange={(e) => setReport({ ...report, numberOfCases: Number(e.target.value) })} />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="cases">Reported Deaths</Label>
+                <Input id="cases" type="number" placeholder="Number of reported Deaths" value={report.numberOfDeaths} onChange={(e) => setReport({ ...report, numberOfDeaths: Number(e.target.value) })} />
+              </div>
+
+              <div className="grid gap-2">
                 <Label htmlFor="population">Affected Population Size</Label>
-                <Input id="population" type="number" placeholder="Approximate population size" />
+                <Input id="population" type="number" placeholder="Approximate population size" value={report.approximatedPopulationCloseBy} onChange={(e) => setReport({ ...report, approximatedPopulationCloseBy: Number(e.target.value) })} />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="description">Situation Description</Label>
@@ -123,6 +134,8 @@ export default function Component() {
                   className="min-h-[100px] bg-slate-800 text-slate-200 border border-slate-700 rounded-md p-4 w-full resize-none"
                   rows={4}
                   placeholder="Provide details about the outbreak and its impact"
+                  value={report.decription}
+                  onChange={(e) => setReport({ ...report, decription: e.target.value })}
                 />
 
               </div>
