@@ -28,7 +28,7 @@ export default function Component() {
           <div className="space-y-8">
             <section>
               <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-50">
-                General
+                General Settings
               </h2>
               <div className="space-y-4 rounded-md bg-white p-4 shadow dark:bg-gray-900 md:p-6 lg:p-8">
                 <div className="flex items-center justify-between">
