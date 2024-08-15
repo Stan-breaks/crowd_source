@@ -38,7 +38,7 @@ const postReports = async (data: {
   reports: ReportsResponse;
 }): Promise<PostResponse> => {
   const token = localStorage.getItem("token");
-  const response = await fetch(`${apiUrl}report/${data.userName}`, {
+  const response = await fetch(`${apiUrl}/report/${data.userName}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,

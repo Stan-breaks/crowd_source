@@ -35,28 +35,29 @@ export const useGetLocations = () => {
   });
 };
 
-const postLocation = async (data: { userName: string, locations: LocationResponse }): Promise<Promise> => {
-
-}
-
-
-const postReports = async (data: {
-  userName: string;
-  reports: ReportsResponse;
-}): Promise<PostResponse> => {
+const postLocation = async (data: { userName: string, locations: LocationResponse }): Promise<PostResponse> => {
   const token = localStorage.getItem("token");
-  const response = await fetch(`${apiUrl}report/${data.userName}`, {
+  const response = await fetch(`${apiUrl}/location/${data.userName}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
       "content-Type": "application/json",
     },
-    body: JSON.stringify(data.reports),
+    body: JSON.stringify(data.locations)
   });
   if (!response.ok) {
-    throw new Error("post failed");
+    throw new Error("Problem with posting")
   }
   return response.json();
+}
+
+export const usePostLocation = (): UseMutationResult<
+  PostResponse,
+  Error,
+  { userName: string; locations: LocationResponse },
+  unknown
+> => {
+  return useMutation({
+    mutationFn: postLocation,
+  });
 };
-
-
