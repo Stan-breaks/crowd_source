@@ -1,48 +1,24 @@
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
+import { useGetLocations, usePostLocation, LocationResponse } from "@/features/location/useLocation"
 
 export default function Component() {
-  const [locations, setLocations] = useState([
-    {
-      id: 1,
-      address: "123 Main St",
-      city: "San Francisco",
-      state: "CA",
-      country: "USA",
-    },
-    {
-      id: 2,
-      address: "456 Oak Rd",
-      city: "New York",
-      state: "NY",
-      country: "USA",
-    },
-    {
-      id: 3,
-      address: "789 Maple Ln",
-      city: "London",
-      state: "",
-      country: "UK",
-    },
-    {
-      id: 4,
-      address: "321 Elm St",
-      city: "Paris",
-      state: "",
-      country: "France",
-    },
-  ])
-  const [searchQuery, setSearchQuery] = useState("")
+  const userName = localStorage.getItem("userName") || "";
+  const [locations, setLocations] = useState<LocationResponse[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const getLocation = useGetLocations();
+  const postLocation = usePostLocation();
   const filteredLocations = useMemo(() => {
     return locations.filter((location) =>
       Object.values(location).some((value) => value.toString().toLowerCase().includes(searchQuery.toLowerCase())),
     )
   }, [locations, searchQuery])
   const [newLocation, setNewLocation] = useState({
+    id: 0,
     address: "",
     city: "",
     state: "",
@@ -56,14 +32,25 @@ export default function Component() {
   }
   const handleSubmit = (e) => {
     e.preventDefault()
-    setLocations([...locations, { id: locations.length + 1, ...newLocation }])
+    const newId = locations.length + 1;
+    postLocation.mutate({ userName, location: { ...newLocation, id: newId } }, {
+      onSuccess: () => {
+        setLocations([...locations, { ...newLocation, id: newId }])
+      }
+    })
     setNewLocation({
+      id: 0,
       address: "",
       city: "",
       state: "",
       country: "",
     })
   }
+  useEffect(() => {
+    if (getLocation.data != undefined) {
+      setLocations(getLocation.data)
+    }
+  }, [locations]);
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="mb-8">

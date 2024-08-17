@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 const Location = require("../database/schemas/Location");
+const User = require("../database/schemas/User");
 
 //get registered locations
 router.get("/", async (req, res) => {
@@ -57,16 +58,22 @@ router.get("/state/:state", async (req, res) => {
 });
 
 //register location
-router.post("/", async (req, res) => {
+router.post("/:userName", async (req, res) => {
+  const { userName } = req.params;
   const { address, city, country, state } = req.body;
-  const location = new Location({
-    address,
-    city,
-    country,
-    state,
-  });
-  await location.save();
-  res.status(201).send("location registered");
+  const user = await User.find({ userName });
+  if (!user) {
+    res.status(403).send("Unauthorized");
+  } else {
+    const location = new Location({
+      address,
+      city,
+      country,
+      state,
+    });
+    await location.save();
+    res.status(201).send("location registered");
+  }
 });
 
 module.exports = router;

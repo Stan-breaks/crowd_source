@@ -1,6 +1,7 @@
 import { QueryFunction, UseMutationResult, useMutation, useQuery } from "@tanstack/react-query";
 
 export interface LocationResponse {
+  id: number;
   address: string;
   city: string;
   state: string;
@@ -13,7 +14,7 @@ interface PostResponse {
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-const fetchLocation: QueryFunction<LocationResponse> = async () => {
+const fetchLocation: QueryFunction<LocationResponse[]> = async () => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("token not found")
@@ -35,7 +36,7 @@ export const useGetLocations = () => {
   });
 };
 
-const postLocation = async (data: { userName: string, locations: LocationResponse }): Promise<PostResponse> => {
+const postLocation = async (data: { userName: string, location: LocationResponse }): Promise<PostResponse> => {
   const token = localStorage.getItem("token");
   const response = await fetch(`${apiUrl}/location/${data.userName}`, {
     method: "POST",
@@ -43,7 +44,7 @@ const postLocation = async (data: { userName: string, locations: LocationRespons
       Authorization: `Bearer ${token}`,
       "content-Type": "application/json",
     },
-    body: JSON.stringify(data.locations)
+    body: JSON.stringify(data.location)
   });
   if (!response.ok) {
     throw new Error("Problem with posting")
@@ -54,7 +55,7 @@ const postLocation = async (data: { userName: string, locations: LocationRespons
 export const usePostLocation = (): UseMutationResult<
   PostResponse,
   Error,
-  { userName: string; locations: LocationResponse },
+  { userName: string; location: LocationResponse },
   unknown
 > => {
   return useMutation({
