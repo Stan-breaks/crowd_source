@@ -49,6 +49,13 @@ export default function Component() {
         <h1 className="text-3xl font-bold">Locations</h1>
         <p className="text-gray-500">View and manage the locations for your business.</p>
       </div>
+      <div className="mt-6 flex justify-end">
+        <a href="#form">
+          <Button>
+            Add location
+          </Button>
+        </a>
+      </div>
       <div className="mb-8">
         <Input
           type="text"
@@ -83,7 +90,7 @@ export default function Component() {
             <CardDescription>Enter the details for a new location.</CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit}>
+            <form id="form" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="grid gap-2">
                   <Label htmlFor="address">Address</Label>
