@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { CardContent, Card, CardHeader, CardFooter, CardTitle, CardDescription } from "@/components/ui/card";
-import { Select, SelectItem, SelectGroup, SelectValue, SelectContent, SelectTrigger, } from "@/components/ui/select"
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,22 +7,27 @@ import { DownloadIcon } from "@/components/icons";
 import { healthData } from "@/features/data";
 import { useState, useEffect } from "react";
 import { ReportsResponse } from "@/features/report/useReport";
+import { LocationResponse, useGetLocations } from "@/features/location/useLocation";
 
 export default function Component() {
   const [report, setReport] = useState<ReportsResponse>({ disease: "", numberOfCases: 0, numberOfDeaths: 0, decription: "", approximatedPopulationCloseBy: 0, address: "" })
   const [showReport, setShowReport] = useState<boolean>(true);
   const [location, setLocation] = useState<boolean>(true);
+  const [locations, setLocations] = useState<LocationResponse[]>([]);
   const handleMakeReport = () => {
     setShowReport(!showReport);
   };
   console.log(healthData.length);
-
+  const getLocations = useGetLocations();
   const submitReport = () => {
 
   }
   useEffect(() => {
     if (healthData.length === 0) {
       setLocation(false);
+    }
+    if (getLocations.data != undefined) {
+      setLocations(getLocations.data)
     }
   }, []);
   return (
@@ -91,59 +95,58 @@ export default function Component() {
             ))}
           </>
         ) : (
-          <><Card className="w-full max-w-lg mx-auto">
-            <CardHeader>
-              <CardTitle className="text-xl sm:text-2xl">Report Disease Outbreak</CardTitle>
-              <CardDescription className="text-sm sm:text-base">Please provide the following details to help us address the situation.</CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="disease">Disease Name</Label>
-                <Input id="disease" placeholder="Enter the disease name" value={report.disease} onChange={(e) => setReport({ ...report, disease: e.target.value })} />
-              </div>
-              <div className="flex">
-                <select
-                  className="border border-300 rounded-lg px-2 py-1 w-40 h-10"
-                >
-                  <option key="1" value="city1">
-                    1 city1
-                  </option>
-                  <option key="2" value="city2">
-                    2 city2
-                  </option>
-
-                </select>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="cases">Reported Cases</Label>
-                <Input id="cases" type="number" placeholder="Number of reported cases" value={report.numberOfCases} onChange={(e) => setReport({ ...report, numberOfCases: Number(e.target.value) })} />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="cases">Reported Deaths</Label>
-                <Input id="cases" type="number" placeholder="Number of reported Deaths" value={report.numberOfDeaths} onChange={(e) => setReport({ ...report, numberOfDeaths: Number(e.target.value) })} />
-              </div>
-
-              <div className="grid gap-2">
-                <Label htmlFor="population">Affected Population Size</Label>
-                <Input id="population" type="number" placeholder="Approximate population size" value={report.approximatedPopulationCloseBy} onChange={(e) => setReport({ ...report, approximatedPopulationCloseBy: Number(e.target.value) })} />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="description">Situation Description</Label>
-                <Textarea
-                  id="description"
-                  className="min-h-[100px] bg-slate-800 text-slate-200 border border-slate-700 rounded-md p-4 w-full resize-none"
-                  rows={4}
-                  placeholder="Provide details about the outbreak and its impact"
-                  value={report.decription}
-                  onChange={(e) => setReport({ ...report, decription: e.target.value })}
-                />
-
-              </div>
-            </CardContent>
-            <CardFooter className="flex justify-end">
-              <Button type="submit" className="w-full sm:w-auto">Report Outbreak</Button>
-            </CardFooter>
-          </Card></>
+          <>
+            <Card className="w-full max-w-4xl mx-auto">
+              <CardHeader>
+                <CardTitle className="text-xl sm:text-2xl">Report Disease Outbreak</CardTitle>
+                <CardDescription className="text-sm sm:text-base">Please provide the following details to help us address the situation.</CardDescription>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="disease">Disease Name</Label>
+                  <Input id="disease" placeholder="Enter the disease name" value={report.disease} onChange={(e) => setReport({ ...report, disease: e.target.value })} />
+                </div>
+                <div className="flex">
+                  <select
+                    className="border border-300 rounded-lg px-2 py-1 w-full h-10"
+                  >
+                    {locations.map((item) =>
+                      <option>
+                        {`${item.address}, ${item.city}, ${item.state}, ${item.country}`}
+                      </option>
+                    )}
+                  </select>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="cases">Reported Cases</Label>
+                    <Input id="cases" type="number" placeholder="Number of reported cases" value={report.numberOfCases} onChange={(e) => setReport({ ...report, numberOfCases: Number(e.target.value) })} />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="deaths">Reported Deaths</Label>
+                    <Input id="deaths" type="number" placeholder="Number of reported Deaths" value={report.numberOfDeaths} onChange={(e) => setReport({ ...report, numberOfDeaths: Number(e.target.value) })} />
+                  </div>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="population">Affected Population Size</Label>
+                  <Input id="population" type="number" placeholder="Approximate population size" value={report.approximatedPopulationCloseBy} onChange={(e) => setReport({ ...report, approximatedPopulationCloseBy: Number(e.target.value) })} />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="description">Situation Description</Label>
+                  <Textarea
+                    id="description"
+                    className="min-h-[100px] bg-slate-800 text-slate-200 border border-slate-700 rounded-md p-4 w-full resize-none"
+                    rows={4}
+                    placeholder="Provide details about the outbreak and its impact"
+                    value={report.decription}
+                    onChange={(e) => setReport({ ...report, decription: e.target.value })}
+                  />
+                </div>
+              </CardContent>
+              <CardFooter className="flex justify-end">
+                <Button type="submit" className="w-full sm:w-auto" onClick={submitReport}>Report Outbreak</Button>
+              </CardFooter>
+            </Card></>
         )}
       </div>
     </div >

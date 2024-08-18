@@ -17,7 +17,7 @@ export interface ReportsResponse {
 }
 const apiUrl = import.meta.env.VITE_API_URL;
 
-const fetchReports: QueryFunction<ReportsResponse> = async () => {
+const fetchReports: QueryFunction<ReportsResponse[]> = async () => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("token not found");
