@@ -60,12 +60,13 @@ router.get("/state/:state", async (req, res) => {
 //register location
 router.post("/:userName", async (req, res) => {
   const { userName } = req.params;
-  const { address, city, country, state } = req.body;
+  const { id, address, city, country, state } = req.body;
   const user = await User.find({ userName });
   if (!user) {
     res.status(403).send("Unauthorized");
   } else {
     const location = new Location({
+      id,
       address,
       city,
       country,

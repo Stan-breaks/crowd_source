@@ -1,5 +1,5 @@
 
-import { useState, useMemo, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
@@ -12,11 +12,6 @@ export default function Component() {
   const [searchQuery, setSearchQuery] = useState("");
   const getLocation = useGetLocations();
   const postLocation = usePostLocation();
-  const filteredLocations = useMemo(() => {
-    return locations.filter((location) =>
-      Object.values(location).some((value) => value.toString().toLowerCase().includes(searchQuery.toLowerCase())),
-    )
-  }, [locations, searchQuery])
   const [newLocation, setNewLocation] = useState({
     id: 0,
     address: "",
@@ -31,26 +26,23 @@ export default function Component() {
     })
   }
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const newId = locations.length + 1;
-    postLocation.mutate({ userName, location: { ...newLocation, id: newId } }, {
-      onSuccess: () => {
-        setLocations([...locations, { ...newLocation, id: newId }])
-      }
-    })
+    postLocation.mutate({ userName, location: { ...newLocation, id: newId } });
+    setLocations([...locations, { ...newLocation, id: newId }]);
     setNewLocation({
       id: 0,
       address: "",
       city: "",
       state: "",
       country: "",
-    })
+    });
   }
   useEffect(() => {
     if (getLocation.data != undefined) {
       setLocations(getLocation.data)
     }
-  }, [locations]);
+  }, [getLocation.data]);
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="mb-8">
@@ -67,13 +59,17 @@ export default function Component() {
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredLocations.map((location) => (
+        {locations.filter((location) =>
+          Object.values(location).some((value) =>
+            value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+          )
+        ).map((location) => (
           <Card key={location.id}>
             <CardContent>
               <div className="flex flex-col gap-2">
                 <div className="font-medium">{location.address}</div>
                 <div className="text-gray-500">
-                  {location.city}, {location.state} {location.country}
+                  {location.city}, {location.state}, {location.country}
                 </div>
               </div>
             </CardContent>
