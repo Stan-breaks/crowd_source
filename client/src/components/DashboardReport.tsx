@@ -21,6 +21,7 @@ export default function Component() {
   const getLocations = useGetLocations();
   const submitReport = () => {
 
+
   }
   useEffect(() => {
     if (healthData.length === 0) {
