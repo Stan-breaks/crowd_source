@@ -9,6 +9,33 @@ router.get("/picture", async (req, res) => {
   res.status(200).send(pictures);
   return;
 });
+router.get("/participants/:userName", async (req, res) => {
+  const { userName } = req.params;
+  const user = await User.findOne({ userName });
+  if (!user) {
+    return res.status(404).send({ message: "User not found" });
+  }
+
+  const profiles = await Profile.find().populate('user', 'number');
+  if (!profiles || profiles.length === 0) {
+    return res.status(404).send({ message: "No profiles found" });
+  }
+
+  const serializedProfiles = await Promise.all(profiles.map(async (profile, index) => {
+    const userDetails = await User.findById(profile.user);
+    return {
+      id: index + 1,
+      avatarUrl: profile.avatarUrl,
+      name: profile.name,
+      role: profile.role,
+      bio: profile.bio,
+      additionalDetails: profile.additionalDetails,
+      number: userDetails ? userDetails.number : "",
+      email: userDetails ? userDetails.email : "",
+    };
+  }));
+  res.status(200).send(serializedProfiles);
+});
 
 router.get("/:userName", async (req, res) => {
   const { userName } = req.params;

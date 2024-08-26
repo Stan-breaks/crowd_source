@@ -8,71 +8,53 @@ import {
 } from "@/components/ui/drawer";
 import { MailIcon, PhoneIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "@/store/appStore";
-import { selectDrawerStatus } from "@/features/drawer/drawerSlice";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/appStore";
 import { openDrawer, closeDrawer } from "@/features/drawer/drawerSlice";
+import { useGetProfiles, getProfileResponse } from "@/features/profile/useProfile";
 
 export default function Component() {
-  const drawerStatus = useSelector<RootState, boolean>(selectDrawerStatus);
+  const apiUrl = import.meta.env.VITE_API_URL;
   const dispatch = useDispatch<AppDispatch>();
-  const participants = [
-    {
-      id: 1,
-      name: "Olivia Davis",
-      role: "Project Manager",
-      avatar: "/avatars/01.png",
-      bio: "Olivia is an experienced project manager with a strong background in leading cross-functional teams to deliver successful projects. She is known for her excellent communication skills and ability to navigate complex stakeholder relationships.",
-      email: "olivia.davis@example.com",
-      phone: "+1 (555) 123-4567",
-      additionalDetails:
-        "Olivia has a Bachelor's degree in Project Management and is a certified Project Management Professional (PMP). She has over 8 years of experience in the industry and has successfully delivered numerous projects for clients in the technology and healthcare sectors.",
-    },
-    {
-      id: 2,
-      name: "Ethan Smith",
-      role: "Software Engineer",
-      avatar: "/avatars/02.png",
-      bio: "Ethan is a talented software engineer with a passion for building innovative solutions to complex problems. He is known for his strong technical skills and ability to work effectively in fast-paced environments.",
-      email: "Ethan@gmail.com",
-      phone: "+1 (555) 987-6543",
-      additionalDetails:
-        "Ethan has a Bachelor's degree in Computer Science and has over 5 years of experience in software development. He has worked on a wide range of projects, from mobile applications to large-scale enterprise systems.",
-    },
-  ];
-
+  const userName = localStorage.getItem("userName") || "";
+  const profiles = useGetProfiles(userName);
+  const [participants, setParticipants] = useState<getProfileResponse[]>([]);
   const [selectedParticipant, setSelectedParticipant] = useState({
+
     id: 0,
     name: "",
     role: "",
-    avatar: "",
+    avatarUrl: "",
     bio: "",
     email: "",
-    phone: "",
+    number: "",
     additionalDetails: "",
   });
 
-  const handleOpenDrawer = (participant: any) => {
+  const handleOpenDrawer = (participant: getProfileResponse) => {
     dispatch(openDrawer());
     setSelectedParticipant(participant);
-    console.log(drawerStatus);
   };
   const handleCloseDrawer = () => {
     setSelectedParticipant({
       id: 0,
       name: "",
       role: "",
-      avatar: "",
+      avatarUrl: "",
       bio: "",
       email: "",
-      phone: "",
+      number: "",
       additionalDetails: "",
     });
     dispatch(closeDrawer());
-    console.log(drawerStatus);
   };
-  console.log(drawerStatus);
+  useEffect(() => {
+    if (profiles.data != undefined) {
+      setParticipants(profiles.data);
+      console.log(profiles.data)
+    }
+  }, []);
   return (
     <>
       <div className="flex-1 p-6">
@@ -90,7 +72,15 @@ export default function Component() {
                     <Avatar>
                       <AvatarImage
                         alt={participant.name}
-                        src={participant.avatar}
+                        src={`${apiUrl}/${participant.avatarUrl}`}
+                        className="rounded-full"
+                        height="32"
+                        style={{
+                          aspectRatio: "32/32",
+                          objectFit: "cover",
+                        }}
+                        width="32"
+
                       />
                       <AvatarFallback>
                         {participant.name
@@ -116,7 +106,6 @@ export default function Component() {
       </div>
       <Drawer
         open={selectedParticipant.id !== 0}
-        className=" bg-opacity-90 gray"
       >
         <DrawerOverlay />
         <DrawerContent className=" bg-sky-200 w-full max-w-full overflow-y-auto">
@@ -132,7 +121,16 @@ export default function Component() {
               <Avatar className="h-20 w-20">
                 <AvatarImage
                   alt={selectedParticipant.name}
-                  src={selectedParticipant.avatar}
+                  src={`${apiUrl}/${selectedParticipant.avatarUrl}`}
+                  className="rounded-full"
+                  height="70"
+                  style={{
+                    aspectRatio: "70/70",
+                    objectFit: "cover",
+                  }}
+                  width="70"
+
+
                 />
                 <AvatarFallback>
                   {selectedParticipant.name
@@ -171,7 +169,7 @@ export default function Component() {
                 </p>
                 <p className="text-gray-500 dark:text-gray-400">
                   <PhoneIcon className="w-5 h-5 inline-block mr-2" />
-                  {selectedParticipant.phone}
+                  {selectedParticipant.number}
                 </p>
               </div>
             </div>

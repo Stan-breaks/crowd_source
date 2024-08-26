@@ -16,6 +16,7 @@ router.get("/", async (req, res) => {
 
       let trend = "N/A";
       let trendColor = "gray";
+      let location = await Location.findOne
 
       if (previousReport) {
         const caseDifference = report.numberOfCases - previousReport.numberOfCases;
@@ -30,7 +31,6 @@ router.get("/", async (req, res) => {
           trendColor = "blue";
         }
       }
-
       return {
         disease: report.disease,
         trend,
