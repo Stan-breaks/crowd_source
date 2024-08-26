@@ -13,7 +13,7 @@ export interface ReportsResponse {
   address: string;
   numberOfDeaths: number;
   approximatedPopulationCloseBy: number;
-  decription: string;
+  description: string;
 }
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -44,7 +44,7 @@ const postReports = async (data: {
       Authorization: `Bearer ${token}`,
       "content-Type": "application/json",
     },
-    body: JSON.stringify(data.reports),
+    body: JSON.stringify(data.report),
   });
   if (!response.ok) {
     throw new Error("post failed");

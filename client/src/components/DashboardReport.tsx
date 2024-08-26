@@ -10,20 +10,24 @@ import { ReportsResponse, usePostReports } from "@/features/report/useReport";
 import { LocationResponse, useGetLocations } from "@/features/location/useLocation";
 
 export default function Component() {
-  const [report, setReport] = useState<ReportsResponse>({ disease: "", numberOfCases: 0, numberOfDeaths: 0, decription: "", approximatedPopulationCloseBy: 0, address: "" })
+  const [report, setReport] = useState<ReportsResponse>({ disease: "", numberOfCases: 0, numberOfDeaths: 0, description: "", approximatedPopulationCloseBy: 0, address: "" })
   const [showReport, setShowReport] = useState<boolean>(true);
   const [location, setLocation] = useState<boolean>(true);
   const [locations, setLocations] = useState<LocationResponse[]>([]);
   const handleMakeReport = () => {
     setShowReport(!showReport);
   };
-  console.log(healthData.length);
   const getLocations = useGetLocations();
   const postReports = usePostReports();
-  const username = localStorage.getItem("username")
+  const username = localStorage.getItem("userName") || ""
   const submitReport = () => {
-    postReports.mutate({ username: username, report: report });
-    setReport({ disease: "", numberOfCases: 0, numberOfDeaths: 0, decription: "", approximatedPopulationCloseBy: 0, address: "" })
+    postReports.mutate({ userName: username, report: report }, {
+      onSuccess: () => {
+        window.location.reload();
+      }
+    });
+    console.log(report)
+    setReport({ disease: "", numberOfCases: 0, numberOfDeaths: 0, description: "", approximatedPopulationCloseBy: 0, address: "" })
   }
   useEffect(() => {
     if (healthData.length === 0) {
@@ -112,9 +116,10 @@ export default function Component() {
                 <div className="flex">
                   <select
                     className="border border-300 rounded-lg px-2 py-1 w-full h-10"
+                    value={report.address} onChange={(e) => setReport({ ...report, address: e.target.value })}
                   >
-                    {locations.map((item) =>
-                      <option>
+                    {locations.map((item, index) =>
+                      <option key={index} value={`${item.address}, ${item.city}, ${item.state}`}>
                         {`${item.address}, ${item.city}, ${item.state}, ${item.country}`}
                       </option>
                     )}
@@ -141,8 +146,8 @@ export default function Component() {
                     className="min-h-[100px] bg-slate-800 text-slate-200 border border-slate-700 rounded-md p-4 w-full resize-none"
                     rows={4}
                     placeholder="Provide details about the outbreak and its impact"
-                    value={report.decription}
-                    onChange={(e) => setReport({ ...report, decription: e.target.value })}
+                    value={report.description}
+                    onChange={(e) => setReport({ ...report, description: e.target.value })}
                   />
                 </div>
               </CardContent>

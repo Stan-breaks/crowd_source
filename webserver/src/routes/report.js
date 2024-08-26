@@ -16,17 +16,21 @@ router.get("/", async (req, res) => {
 router.post("/:userName", async (req, res) => {
   const { userName } = req.params;
   const user = await User.findOne({ userName });
-  const { disease, cases, deaths, population, description, address } = req.body;
-  const location = await Location.findOne({ $or: [{ address, state, city, country }] });
+  if (!user) {
+    res.status(400).send({ message: "User not found" });
+    return;
+  }
+  const { disease, numberOfCases, numberOfDeaths, approximatedPopulationCloseBy, description, address } = req.body;
+  const location = await Location.findOne({ address: address.split(", ")[0] });
   if (!location) {
     res.status(400).send({ message: "Location not found" });
     return;
   }
   const report = new Report({
     disease,
-    numberOfCases: cases,
-    numberOfDeaths: deaths,
-    approximatedPopulationCloseBy: population,
+    numberOfCases,
+    numberOfDeaths,
+    approximatedPopulationCloseBy,
     description,
     user: user._id,
     location: location._id,

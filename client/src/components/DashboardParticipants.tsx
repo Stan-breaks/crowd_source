@@ -53,7 +53,7 @@ export default function Component() {
     additionalDetails: "",
   });
 
-  const handleOpenDrawer = (participant) => {
+  const handleOpenDrawer = (participant: any) => {
     dispatch(openDrawer());
     setSelectedParticipant(participant);
     console.log(drawerStatus);

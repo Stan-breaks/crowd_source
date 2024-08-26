@@ -25,7 +25,7 @@ const reportSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  decription: {
+  description: {
     type: String,
     required: true,
   },
