@@ -6,11 +6,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { DownloadIcon } from "@/components/icons";
 import { healthData } from "@/features/data";
 import { useState, useEffect } from "react";
-import { ReportsResponse, usePostReports } from "@/features/report/useReport";
+import { ReportsResponse, GetReportsResponse, usePostReports, useGetReports } from "@/features/report/useReport";
 import { LocationResponse, useGetLocations } from "@/features/location/useLocation";
 
 export default function Component() {
   const [report, setReport] = useState<ReportsResponse>({ disease: "", numberOfCases: 0, numberOfDeaths: 0, description: "", approximatedPopulationCloseBy: 0, address: "" })
+  const [reports, setReports] = useState<GetReportsResponse[]>([]);
   const [showReport, setShowReport] = useState<boolean>(true);
   const [location, setLocation] = useState<boolean>(true);
   const [locations, setLocations] = useState<LocationResponse[]>([]);
@@ -20,6 +21,7 @@ export default function Component() {
   const getLocations = useGetLocations();
   const postReports = usePostReports();
   const username = localStorage.getItem("userName") || ""
+  const getReports = useGetReports(username);
   const submitReport = () => {
     postReports.mutate({ userName: username, report: report }, {
       onSuccess: () => {
@@ -35,6 +37,9 @@ export default function Component() {
     }
     if (getLocations.data != undefined) {
       setLocations(getLocations.data)
+    }
+    if (getReports.data != undefined) {
+      setReports(getReports.data)
     }
   }, []);
   return (
@@ -72,7 +77,7 @@ export default function Component() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {showReport ? (
           <>
-            {healthData.map((item, index) => (
+            {reports.map((item, index) => (
               <Card key={index}>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">

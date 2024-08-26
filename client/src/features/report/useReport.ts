@@ -7,6 +7,14 @@ import {
 export interface PostResponse {
   message: string;
 }
+export interface GetReportsResponse {
+  disease: string;
+  trend: string;
+  trendColor: string;
+  mortalityRate: string;
+  cases: string;
+  location: string;
+}
 export interface ReportsResponse {
   disease: string;
   numberOfCases: number;
@@ -17,7 +25,7 @@ export interface ReportsResponse {
 }
 const apiUrl = import.meta.env.VITE_API_URL;
 
-const fetchReports: QueryFunction<ReportsResponse[]> = async () => {
+const fetchReports: QueryFunction<GetReportsResponse[]> = async () => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("token not found");
@@ -63,9 +71,9 @@ export const usePostReports = (): UseMutationResult<
 
   });
 };
-export const useGetSettings = (userName: string) => {
+export const useGetReports = (userName: string) => {
   return useQuery({
-    queryKey: ["profileSettings", userName],
+    queryKey: ["reports", userName],
     queryFn: fetchReports,
   });
 };
