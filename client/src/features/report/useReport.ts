@@ -35,7 +35,7 @@ const fetchReports: QueryFunction<ReportsResponse[]> = async () => {
 
 const postReports = async (data: {
   userName: string;
-  reports: ReportsResponse;
+  report: ReportsResponse;
 }): Promise<PostResponse> => {
   const token = localStorage.getItem("token");
   const response = await fetch(`${apiUrl}/report/${data.userName}`, {
@@ -55,11 +55,12 @@ const postReports = async (data: {
 export const usePostReports = (): UseMutationResult<
   PostResponse,
   Error,
-  { userName: string; reports: ReportsResponse },
+  { userName: string; report: ReportsResponse },
   unknown
 > => {
   return useMutation({
     mutationFn: postReports,
+
   });
 };
 export const useGetSettings = (userName: string) => {

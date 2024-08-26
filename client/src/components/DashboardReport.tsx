@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { DownloadIcon } from "@/components/icons";
 import { healthData } from "@/features/data";
 import { useState, useEffect } from "react";
-import { ReportsResponse } from "@/features/report/useReport";
+import { ReportsResponse, usePostReports } from "@/features/report/useReport";
 import { LocationResponse, useGetLocations } from "@/features/location/useLocation";
 
 export default function Component() {
@@ -19,9 +19,11 @@ export default function Component() {
   };
   console.log(healthData.length);
   const getLocations = useGetLocations();
+  const postReports = usePostReports();
+  const username = localStorage.getItem("username")
   const submitReport = () => {
-
-
+    postReports.mutate({ username: username, report: report });
+    setReport({ disease: "", numberOfCases: 0, numberOfDeaths: 0, decription: "", approximatedPopulationCloseBy: 0, address: "" })
   }
   useEffect(() => {
     if (healthData.length === 0) {
