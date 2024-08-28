@@ -7,11 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "build": "npm install && npm run build:app && npm run postprocess",
-    "build:app": "webpack --mode production",
-    "postprocess": "npm run optimize:images && npm run optimize:js",
-    "optimize:images": "imagemin images/* --out-dir=dist/images",
-    "optimize:js": "terser dist/bundle.js -o dist/bundle.min.js"
+    "build": "npm install"
   },
   "author": "stan-breaks",
   "license": "ISC",
