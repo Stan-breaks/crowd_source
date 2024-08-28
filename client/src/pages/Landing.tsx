@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 export default function Component() {
+  const apiUrl = import.meta.env.VITE_API_URL;
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <header className="px-4 lg:px-6 h-14 flex items-center">
@@ -66,7 +67,7 @@ export default function Component() {
                 alt="crowd"
                 className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
                 height="310"
-                src="http://localhost:3000/static/crowd.jpeg"
+                src={`${apiUrl}/static/crowd.jpeg`}
                 width="550"
               />
               <div className="flex flex-col justify-center space-y-4">
