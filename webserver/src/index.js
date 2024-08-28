@@ -46,3 +46,5 @@ app.use("/profile", authenticateToken, require("./routes/profile"));
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+module.exports = app;
