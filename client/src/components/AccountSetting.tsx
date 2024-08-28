@@ -22,7 +22,7 @@ export default function Component() {
   const userName = localStorage.getItem("userName") || "";
   const profile = useGetSettings(userName);
   const pictures = usePictures();
-  const data = pictures.data;
+  const data = pictures.data as { _id: string; url: string }[] | undefined;
   const post = usePostSettings();
   const submitUpdate = () => {
     post.mutate(

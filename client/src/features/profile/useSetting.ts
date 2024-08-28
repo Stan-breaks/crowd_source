@@ -24,7 +24,7 @@ const fetchSettings: QueryFunction<
   SettingsResponse,
   [string, string]
 > = async ({ queryKey }) => {
-  const [key, userName] = queryKey;
+  const [, userName] = queryKey;
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("token not found");

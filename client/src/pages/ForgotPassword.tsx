@@ -79,7 +79,7 @@ export default function Component() {
                 </Button>
               </div>
               <div className="mt-4 text-center text-sm">
-                <Link className="underline" href="#">
+                <Link className="underline" to="#">
                   Back to login
                 </Link>
               </div>

@@ -1,4 +1,4 @@
-export function BellIcon(props) {
+export function BellIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -18,7 +18,7 @@ export function BellIcon(props) {
   );
 }
 
-export function CalendarIcon(props) {
+export function CalendarIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -40,7 +40,7 @@ export function CalendarIcon(props) {
   );
 }
 
-export function FileTextIcon(props) {
+export function FileTextIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -63,7 +63,7 @@ export function FileTextIcon(props) {
   );
 }
 
-export function HomeIcon(props) {
+export function HomeIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -83,7 +83,7 @@ export function HomeIcon(props) {
   );
 }
 
-export function MapPinIcon(props) {
+export function MapPinIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -103,7 +103,7 @@ export function MapPinIcon(props) {
   );
 }
 
-export function MessageSquareIcon(props) {
+export function MessageSquareIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -122,7 +122,7 @@ export function MessageSquareIcon(props) {
   );
 }
 
-export function MedicalIcon(props) {
+export function MedicalIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -141,7 +141,7 @@ export function MedicalIcon(props) {
   );
 }
 
-export function SearchIcon(props) {
+export function SearchIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -161,7 +161,7 @@ export function SearchIcon(props) {
   );
 }
 
-export function SettingsIcon(props) {
+export function SettingsIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -181,7 +181,7 @@ export function SettingsIcon(props) {
   );
 }
 
-export function UserIcon(props) {
+export function UserIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -201,7 +201,7 @@ export function UserIcon(props) {
   );
 }
 
-export function UsersIcon(props) {
+export function UsersIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -223,7 +223,7 @@ export function UsersIcon(props) {
   );
 }
 
-export function ActivityIcon(props) {
+export function ActivityIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -242,7 +242,7 @@ export function ActivityIcon(props) {
   );
 }
 
-export function MailIcon(props) {
+export function MailIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -262,7 +262,7 @@ export function MailIcon(props) {
   );
 }
 
-export function PhoneIcon(props) {
+export function PhoneIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -280,7 +280,7 @@ export function PhoneIcon(props) {
     </svg>
   );
 }
-export function DownloadIcon(props) {
+export function DownloadIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

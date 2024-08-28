@@ -115,7 +115,7 @@ export default function Component() {
   );
 }
 
-function MedicalIcon(props) {
+function MedicalIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

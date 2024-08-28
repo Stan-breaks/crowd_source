@@ -10,7 +10,6 @@ interface Props {
   profile: profileResponse;
 }
 
-const url = import.meta.env.VITE_API_URL;
 
 export default function Component({ profile }: Props) {
   return (
@@ -42,8 +41,8 @@ export default function Component({ profile }: Props) {
           </div>
           <Separator />
           <div className="grid gap-2">
-          <h3 className="text-lg font-semibold">Additional Details</h3>
-          <p className="text-gray-500">{profile.additionalDetails}</p>
+            <h3 className="text-lg font-semibold">Additional Details</h3>
+            <p className="text-gray-500">{profile.additionalDetails}</p>
           </div>
         </CardContent>
       </Card>

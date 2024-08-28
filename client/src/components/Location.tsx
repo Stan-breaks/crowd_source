@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -19,13 +18,13 @@ export default function Component() {
     state: "",
     country: "",
   })
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewLocation({
       ...newLocation,
       [e.target.name]: e.target.value,
     })
   }
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newId = locations.length + 1;
     postLocation.mutate({ userName, location: { ...newLocation, id: newId } });
