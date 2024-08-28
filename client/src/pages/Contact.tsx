@@ -15,7 +15,7 @@ export default function Component() {
           <div className="space-y-2">
             <dt className="font-medium">Email</dt>
             <dd>
-              <Link className="underline underline-offset-2" href="#">
+              <Link className="underline underline-offset-2" to="#">
                 hello@example.com
               </Link>
             </dd>
@@ -38,28 +38,28 @@ export default function Component() {
         <div className="grid grid-cols-2 gap-4">
           <Link
             className="flex items-center space-x-2 text-sm font-medium"
-            href="#"
+            to="#"
           >
             <TwitterIcon className="w-4 h-4" />
             Twitter
           </Link>
           <Link
             className="flex items-center space-x-2 text-sm font-medium"
-            href="#"
+            to="#"
           >
             <FacebookIcon className="w-4 h-4" />
             Facebook
           </Link>
           <Link
             className="flex items-center space-x-2 text-sm font-medium"
-            href="#"
+            to="#"
           >
             <LinkedinIcon className="w-4 h-4" />
             LinkedIn
           </Link>
           <Link
             className="flex items-center space-x-2 text-sm font-medium"
-            href="#"
+            to="#"
           >
             <InstagramIcon className="w-4 h-4" />
             Instagram
@@ -70,7 +70,7 @@ export default function Component() {
   );
 }
 
-function FacebookIcon(props) {
+function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -89,7 +89,7 @@ function FacebookIcon(props) {
   );
 }
 
-function InstagramIcon(props) {
+function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -110,7 +110,7 @@ function InstagramIcon(props) {
   );
 }
 
-function LinkedinIcon(props) {
+function LinkedinIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -131,7 +131,7 @@ function LinkedinIcon(props) {
   );
 }
 
-function TwitterIcon(props) {
+function TwitterIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
