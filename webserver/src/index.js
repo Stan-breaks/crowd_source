@@ -1,6 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
-const session = require("express-session");
+// Removed session import
 const app = express();
 const port = 3000;
 const cors = require("cors");
@@ -16,13 +16,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(
-  session({
-    secret: "fdslajfsnfdsjsdaclcdsmcdskmsmmdsl",
-    resave: true,
-    saveUninitialized: true,
-  }),
-);
+// Removed session middleware
 app.use("/static", express.static("public"));
 
 //token authentification middleware

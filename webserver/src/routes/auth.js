@@ -31,9 +31,7 @@ router.post("/register", async (req, res) => {
             user: newUser.id,
           });
           await newProfile.save();
-          req.session.user = {
-            userName: newUser.userName,
-          };
+          // Removed session logic
           const tokenUser = { id: newUser.id, username: newUser.userName };
           const token = jwt.sign(tokenUser, SECRET_KEY, { expiresIn: "1h" });
           res.status(201).send({ user: tokenUser, token });
@@ -51,28 +49,23 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  if (req.session.user) {
-    res.send("Aleardy logged in");
-  } else {
-    if (email && password) {
-      const user = await User.findOne({ email });
-      if (!user) {
-        res.status(400).send({ message: "User not found" });
-      } else {
-        if (comparePassword(password, user.password)) {
-          req.session.user = {
-            userName: user.userName,
-          };
-          const tokenUser = { id: user.id, username: user.userName };
-          const token = jwt.sign(tokenUser, SECRET_KEY, { expiresIn: "1h" });
-          res.status(200).send({ user: tokenUser, token });
-        } else {
-          res.status(400).send({ message: "Invalid password" });
-        }
-      }
+  // Removed session check
+  if (email && password) {
+    const user = await User.findOne({ email });
+    if (!user) {
+      res.status(400).send({ message: "User not found" });
     } else {
-      res.status(400).send({ message: "Bad Request" });
+      if (comparePassword(password, user.password)) {
+        // Removed session logic
+        const tokenUser = { id: user.id, username: user.userName };
+        const token = jwt.sign(tokenUser, SECRET_KEY, { expiresIn: "1h" });
+        res.status(200).send({ user: tokenUser, token });
+      } else {
+        res.status(400).send({ message: "Invalid password" });
+      }
     }
+  } else {
+    res.status(400).send({ message: "Bad Request" });
   }
 });
 
@@ -100,17 +93,8 @@ router.post("/changePassword", async (req, res) => {
 });
 
 router.post("/logout", (req, res) => {
-  if (req.session.user) {
-    req.session.destroy((err) => {
-      if (err) {
-        res.status(500).send({ message: "Error logging out" });
-      } else {
-        res.status(200).send({ message: "Logged out" });
-      }
-    });
-  } else {
-    res.status(400).send({ message: "Bad Request" });
-  }
+  // Removed session destruction logic
+  res.status(200).send({ message: "Logged out" });
 });
 
 module.exports = router;
